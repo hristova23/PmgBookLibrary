@@ -17,6 +17,8 @@ namespace Library.Data
 
         public DbSet<Transaction> Transaction { get; set; }
 
+        public DbSet<BookLanguage> BookLanguages { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<ApplicationUserBook>()

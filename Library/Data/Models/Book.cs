@@ -34,6 +34,9 @@ namespace Library.Data.Models
         [Required]
         public Category Category { get; set; } = null!;
 
+        [Required]
+        public List<BookLanguage> BookLanguages { get; set; } = new List<BookLanguage>();
+
         public List<ApplicationUserBook> ApplicationUsersBooks { get; set; } = new List<ApplicationUserBook>();
     }
 }
