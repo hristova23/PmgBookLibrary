@@ -15,6 +15,8 @@ namespace Library.Data
 
         public DbSet<Category> Categories { get; set; }
 
+        public DbSet<Transaction> Transaction { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<ApplicationUserBook>()
@@ -29,6 +31,21 @@ namespace Library.Data
                 .Property(u => u.Email)
                 .HasMaxLength(60)
                 .IsRequired();
+
+            builder.Entity<ApplicationUser>(user =>
+            {
+                user
+                    .HasMany(s => s.SendedTransactions)
+                    .WithOne(s => s.Sender)
+                    .HasForeignKey(s => s.SenderId)
+                    .OnDelete(DeleteBehavior.Restrict);
+
+                user
+                    .HasMany(s => s.RecievedTransactions)
+                    .WithOne(s => s.Reciever)
+                    .HasForeignKey(s => s.RecieverId)
+                    .OnDelete(DeleteBehavior.Restrict);
+            });
 
             builder
                .Entity<Book>()

@@ -19,5 +19,10 @@
             public const int DescriptionMinLength = 5;
             public const int DescriptionMaxLength = 5000;
         }
+
+        public class Transaction
+        {
+            public const int MaxMessageLength = 5000;
+        }
     }
 }
