@@ -4,18 +4,16 @@ using Library.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Library.Data.Migrations
+namespace Library.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(LibraryDbContext))]
-    [Migration("20221106151600_InitialMigration")]
-    partial class InitialMigration
+    partial class LibraryDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -96,14 +94,14 @@ namespace Library.Data.Migrations
                         {
                             Id = "dea12856-c198-4129-b3f3-b893d8395082",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "8311c159-98ee-454f-b0ed-922f1f1934a7",
+                            ConcurrencyStamp = "85044dc2-834f-4498-b1ef-f39370ea5567",
                             Credits = 0,
                             Email = "agent@mail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAEAACcQAAAAEHbBLvZThbk6Dc8EYO58E1HbG0L8kat4JZPt7vBn5e3kk3eaX2Ju8QKa0vhWgHiVeg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEE55qRFgVsyLZfZ33X/Y+Icjt63KjL0amoCzdhbdZe0Stjosce7/lNYeT5VDo3rYCg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "9e47bd0e-d7eb-4703-8b58-e5b6a8058ee4",
+                            SecurityStamp = "f0a58908-e06c-4d7d-8329-8b417bbddac2",
                             TwoFactorEnabled = false,
                             UserName = "agent@mail.com"
                         },
@@ -111,14 +109,14 @@ namespace Library.Data.Migrations
                         {
                             Id = "6d5800ce-d726-4fc8-83d9-d6b3ac1f591e",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "040601de-d3d9-4e9a-9232-1b15512b986c",
+                            ConcurrencyStamp = "c5ccb707-8731-4a29-b639-f868442f3474",
                             Credits = 0,
                             Email = "guest@mail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAEAACcQAAAAEPZfEAGjyS5HjJtlFKcOWVPLpmP+qFBDXCeNfxcoG1kF3zaZZbntr8MyXUVqJ1ER1Q==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEISUntBvRlU7vPwu/vs5n1RnTwpqmAmsXE3LSu4GIcyvygChUV/ZzeSxtzXuprYfWA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "35174127-2077-4db0-bfc9-d5bca06a7ffb",
+                            SecurityStamp = "2142154a-c74e-45ad-a46e-0037ddb0a5a3",
                             TwoFactorEnabled = false,
                             UserName = "guest@mail.com"
                         });

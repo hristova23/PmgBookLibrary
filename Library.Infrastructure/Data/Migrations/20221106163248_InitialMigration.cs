@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Library.Data.Migrations
+namespace Library.Infrastructure.Data.Migrations
 {
     public partial class InitialMigration : Migration
     {
@@ -226,32 +226,6 @@ namespace Library.Data.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
-
-            migrationBuilder.InsertData(
-                table: "AspNetUsers",
-                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Credits", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[,]
-                {
-                    { "6d5800ce-d726-4fc8-83d9-d6b3ac1f591e", 0, "040601de-d3d9-4e9a-9232-1b15512b986c", 0, "guest@mail.com", false, false, null, null, null, "AQAAAAEAACcQAAAAEPZfEAGjyS5HjJtlFKcOWVPLpmP+qFBDXCeNfxcoG1kF3zaZZbntr8MyXUVqJ1ER1Q==", null, false, "35174127-2077-4db0-bfc9-d5bca06a7ffb", false, "guest@mail.com" },
-                    { "dea12856-c198-4129-b3f3-b893d8395082", 0, "8311c159-98ee-454f-b0ed-922f1f1934a7", 0, "agent@mail.com", false, false, null, null, null, "AQAAAAEAACcQAAAAEHbBLvZThbk6Dc8EYO58E1HbG0L8kat4JZPt7vBn5e3kk3eaX2Ju8QKa0vhWgHiVeg==", null, false, "9e47bd0e-d7eb-4703-8b58-e5b6a8058ee4", false, "agent@mail.com" }
-                });
-
-            migrationBuilder.InsertData(
-                table: "Categories",
-                columns: new[] { "Id", "Name" },
-                values: new object[,]
-                {
-                    { 1, "Action" },
-                    { 2, "Biography" },
-                    { 3, "Children" },
-                    { 4, "Crime" },
-                    { 5, "Fantasy" }
-                });
-
-            migrationBuilder.InsertData(
-                table: "Books",
-                columns: new[] { "Id", "AuthorId", "CategoryId", "Description", "ImageUrl", "Rating", "Title" },
-                values: new object[] { 5, "6d5800ce-d726-4fc8-83d9-d6b3ac1f591e", 1, "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", "https://img.freepik.com/free-psd/book-cover-mock-up-arrangement_23-2148622888.jpg?w=826&t=st=1666106877~exp=1666107477~hmac=5dea3e5634804683bccfebeffdbde98371db37bc2d1a208f074292c862775e1b", 9.5m, "Lorem Ipsum" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",

@@ -20,6 +20,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Library.Core\Library.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Update="Areas\Identity\Pages\Account\_ViewImports.cshtml">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>

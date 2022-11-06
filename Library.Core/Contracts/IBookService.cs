@@ -1,13 +1,13 @@
-﻿using Library.Data.Models;
-using Library.Models;
+﻿using Library.Core.Models;//
+using Library.Core.Models.Book;
 
-namespace Library.Contracts
+namespace Library.Core.Contracts
 {
     public interface IBookService
     {
         Task<IEnumerable<BookViewModel>> GetAllAsync();
 
-        Task<IEnumerable<Category>> GetCategoriesAsync();
+        Task<IEnumerable<CategoryViewModel>> GetCategoriesAsync();
 
         Task AddBookAsync(AddBookViewModel model);
 

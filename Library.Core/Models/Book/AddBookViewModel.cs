@@ -1,8 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Library.Data.Models;
 using static Library.Data.DataConstants.Book;
 
-namespace Library.Models
+namespace Library.Core.Models.Book
 {
     public class AddBookViewModel
     {
@@ -27,6 +26,6 @@ namespace Library.Models
 
         public int CategoryId { get; set; }
 
-        public IEnumerable<Category> Categories { get; set; } = new List<Category>();
+        public IEnumerable<CategoryViewModel> Categories { get; set; } = new List<CategoryViewModel>();
     }
 }

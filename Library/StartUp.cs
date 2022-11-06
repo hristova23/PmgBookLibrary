@@ -1,8 +1,8 @@
-using Library.Contracts;
+using Library.Core.Contracts;
+using Library.Core.Services;
 using Library.Data;
 using Library.Data.Models;
-using Library.Services;
-using Microsoft.AspNetCore.Identity;
+using Library.Infrastructure.Data.Common;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,11 +13,12 @@ builder.Services.AddDbContext<LibraryDbContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
+builder.Services.AddDefaultIdentity< ApplicationUser>(options =>
 {
-    options.SignIn.RequireConfirmedAccount = false;//
-    options.User.RequireUniqueEmail = true;
-    options.Password.RequiredLength = 5;
+    options.SignIn.RequireConfirmedAccount = builder.Configuration.GetValue<bool>("Identity:RequireConfirmedAccount");//  
+    options.User.RequireUniqueEmail = builder.Configuration.GetValue<bool>("Identity:RequireUniqueEmail");
+    options.Password.RequiredLength = builder.Configuration.GetValue<int>("Identity:RequiredLength");
+    options.Password.RequireNonAlphanumeric = builder.Configuration.GetValue<bool>("Identity:RequireNonAlphanumeric");
 })
     .AddEntityFrameworkStores<LibraryDbContext>();
 
@@ -29,6 +30,8 @@ builder.Services.ConfigureApplicationCookie(options =>
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddScoped<IBookService, BookService>();
+
+builder.Services.AddScoped<IRepository, Repository>();//
 
 var app = builder.Build();
 
