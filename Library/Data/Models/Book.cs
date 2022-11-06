@@ -14,8 +14,10 @@ namespace Library.Data.Models
         public string Title { get; set; } = null!;
 
         [Required]
-        [StringLength(AuthorMaxLength, MinimumLength = AuthorMinLength)]
-        public string Author { get; set; } = null!;
+        public string AuthorId { get; set; } = null!;
+
+        [ForeignKey(nameof(AuthorId))]
+        public ApplicationUser Author { get; set; } = null!;
 
         [Required]
         [StringLength(DescriptionMaxLength)]
@@ -28,15 +30,9 @@ namespace Library.Data.Models
         public decimal Rating { get; set; }
 
         [Required]
-        [ForeignKey(nameof(Category))]
         public int CategoryId { get; set; }
 
-        [Required]
+        [ForeignKey(nameof(CategoryId))]
         public Category Category { get; set; } = null!;
-
-        [Required]
-        public List<BookLanguage> BookLanguages { get; set; } = new List<BookLanguage>();
-
-        public List<ApplicationUserBook> ApplicationUsersBooks { get; set; } = new List<ApplicationUserBook>();
     }
 }

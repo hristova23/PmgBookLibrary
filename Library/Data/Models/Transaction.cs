@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using static Library.Data.DataConstants.Transaction;
 
 namespace Library.Data.Models
@@ -6,7 +7,7 @@ namespace Library.Data.Models
     public class Transaction
     {
         [Key]
-        public int TransactionId { get; set; }
+        public int Id { get; set; }
 
         [Required]
         public int Quantity { get; set; }
@@ -16,10 +17,14 @@ namespace Library.Data.Models
 
         [Required]
         public string SenderId { get; set; } = null!;
+        
+        [ForeignKey(nameof(SenderId))]
         public ApplicationUser Sender { get; set; } = null!;
 
         [Required]
         public string RecieverId { get; set; } = null!;
+
+        [ForeignKey(nameof(RecieverId))]
         public ApplicationUser Reciever { get; set; } = null!;
 
         [Required]

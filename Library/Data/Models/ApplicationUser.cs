@@ -5,13 +5,21 @@ namespace Library.Data.Models
 {
     public class ApplicationUser : IdentityUser
     {
-        public List<ApplicationUserBook> ApplicationUsersBooks { get; set; } = new List<ApplicationUserBook>();
+        public ApplicationUser()
+        {
+            this.Books = new List<Book>();
+            this.SendedTransactions = new List<Transaction>();
+            this.RecievedTransactions = new List<Transaction>();
+            this.Credits = 0;
+        }
 
-        public ICollection<Transaction> SendedTransactions { get; set; } = new List<Transaction>();
+        public List<Book> Books { get; set; } 
 
-        public ICollection<Transaction> RecievedTransactions { get; set; } = new List<Transaction>();
+        public List<Transaction> SendedTransactions { get; set; }
+
+        public List<Transaction> RecievedTransactions { get; set; }
 
         [Required]
-        public int Credits { get; set; } = 0;
+        public int Credits { get; set; }
     }
 }

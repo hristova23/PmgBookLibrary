@@ -46,7 +46,8 @@ namespace Library.Controllers
             var user = new ApplicationUser()
             {
                 Email = model.Email,
-                UserName = model.UserName
+                UserName = model.UserName,
+                Credits = 5
             };
 
             var result = await userManager.CreateAsync(user, model.Password);

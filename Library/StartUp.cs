@@ -15,7 +15,8 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
 {
-    options.SignIn.RequireConfirmedAccount = false;
+    options.SignIn.RequireConfirmedAccount = false;//
+    options.User.RequireUniqueEmail = true;
     options.Password.RequiredLength = 5;
 })
     .AddEntityFrameworkStores<LibraryDbContext>();
@@ -34,7 +35,7 @@ var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
-    app.UseMigrationsEndPoint();
+    app.UseDeveloperExceptionPage(); //replaced UseMigrationsEndPoint() 
 }
 else
 {
