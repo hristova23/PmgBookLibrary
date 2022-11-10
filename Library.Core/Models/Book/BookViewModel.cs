@@ -12,8 +12,6 @@
 
         public string ImageUrl { get; set; }
 
-        public decimal Rating { get; set; }
-
         public string Category { get; set; }
     }
 }

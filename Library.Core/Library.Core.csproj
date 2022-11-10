@@ -10,4 +10,8 @@
     <ProjectReference Include="..\Library.Infrastructure\Library.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Models\Transaction\" />
+  </ItemGroup>
+
 </Project>

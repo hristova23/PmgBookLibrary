@@ -7,25 +7,26 @@ namespace Library.Core.Models.Book
     {
         [Required]
         [StringLength(TitleMaxLength, MinimumLength = TitleMinLength)]
+        [Display(Name = "Title")]
         public string Title { get; set; }
 
         [Required]
         [StringLength(AuthorMaxLength, MinimumLength = AuthorMinLength)]
+        [Display(Name = "Author")]
         public string Author { get; set; }
 
         [Required]
         [StringLength(DescriptionMaxLength, MinimumLength = DescriptionMinLength)]
+        [Display(Name = "Description")]
         public string Description { get; set; }
 
         [Required]
+        [Display(Name = "Image Url")]
         public string ImageUrl { get; set; }
 
-        [Required]
-        [Range(typeof(decimal), "0.0", "10.0", ConvertValueInInvariantCulture = true)]
-        public decimal Rating { get; set; }
+        [Display(Name = "Category")]
+        public string Category { get; set; }
 
-        public int CategoryId { get; set; }
-
-        public IEnumerable<CategoryViewModel> Categories { get; set; } = new List<CategoryViewModel>();
+        public IEnumerable<CategoryViewModel> Categories { get; set; }
     }
 }

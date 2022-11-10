@@ -1,5 +1,5 @@
 ﻿using Library.Data.Configuration;
-using Library.Data.Models;
+using Library.Infastructure.Data.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 

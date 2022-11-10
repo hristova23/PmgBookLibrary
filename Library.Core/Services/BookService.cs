@@ -24,9 +24,20 @@ namespace Library.Core.Services
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<BookViewModel>> GetAllAsync()
+        public async Task<IEnumerable<BookViewModel>> GetAllAsync()
         {
             throw new NotImplementedException();
+
+            //return await repo.AllReadonly<Book>()
+            //    .OrderByDescending(b => b.Id)
+            //    .Select(b => new BookViewModel()
+            //    {
+            //        Id = b.Id,
+            //        Title = b.Title,
+            //        Description = b.Description,
+            //        ImageUrl = b.ImageUrl
+            //    })
+            //    .ToListAsync();
         }
 
         public Task<IEnumerable<CategoryViewModel>> GetCategoriesAsync()

@@ -6,6 +6,5 @@ namespace Library.Controllers
     [Authorize]
     public class BaseController : Controller
     {
-
     }
 }

@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using static Library.Data.DataConstants.Book;
 
-namespace Library.Data.Models
+namespace Library.Infastructure.Data.Models
 {
     public class Book
     {

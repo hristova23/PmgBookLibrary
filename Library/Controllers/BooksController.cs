@@ -1,5 +1,6 @@
-﻿using Library.Contracts;
-using Library.Models;
+﻿using Library.Core.Contracts;
+using Library.Core.Models.Book;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
@@ -15,6 +16,7 @@ namespace Library.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> All()
         {
             var model = await bookService.GetAllAsync();

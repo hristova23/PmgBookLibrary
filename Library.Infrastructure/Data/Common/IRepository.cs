@@ -47,7 +47,7 @@ namespace Library.Infrastructure.Data.Common
         Task AddAsync<T>(T entity) where T : class;
 
         /// <summary>
-        /// Ads collection of entities to the database
+        /// Adds collection of entities to the database
         /// </summary>
         /// <param name="entities">Enumerable list of entities</param>
         Task AddRangeAsync<T>(IEnumerable<T> entities) where T : class;

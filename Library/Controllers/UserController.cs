@@ -1,5 +1,5 @@
-﻿using Library.Data.Models;
-using Library.Models;
+﻿using Library.Core.Models.User;
+using Library.Infastructure.Data.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

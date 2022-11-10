@@ -1,7 +1,7 @@
 using Library.Core.Contracts;
 using Library.Core.Services;
 using Library.Data;
-using Library.Data.Models;
+using Library.Infastructure.Data.Models;
 using Library.Infrastructure.Data.Common;
 using Microsoft.EntityFrameworkCore;
 
