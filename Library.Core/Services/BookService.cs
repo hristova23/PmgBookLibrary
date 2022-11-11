@@ -34,6 +34,8 @@ namespace Library.Core.Services
                 {
                     Id = b.Id,
                     Title = b.Title,
+                    Publisher = b.Publisher.UserName,
+                    Category = b.Category.Name,
                     Description = b.Description,
                     ImageUrl = b.ImageUrl
                 })

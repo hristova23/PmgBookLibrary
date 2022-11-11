@@ -57,6 +57,7 @@ namespace Library.Controllers
             }
         }
 
+        //[HttpPost]//?
         public async Task<IActionResult> AddToCollection(int bookId)
         {
             try
@@ -72,6 +73,14 @@ namespace Library.Controllers
             return RedirectToAction(nameof(All));
         }
 
+        public async Task<IActionResult> Favorites()
+        {
+            var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+            var model = await bookService.GetMyBooksAsync(userId);
+
+            return View("Mine", model);
+        }
+        
         public async Task<IActionResult> Mine()
         {
             var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
@@ -80,6 +89,26 @@ namespace Library.Controllers
             return View("Mine", model);
         }
 
+        public IActionResult Details(int id)
+        {
+            //var transaction = this.bookService.GetById(id);
+
+            //if (transaction == null)
+            //{
+            //    return this.NotFound();
+            //}
+
+            //return View(transaction);
+
+            return View();
+        }
+
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        //[HttpPost]//?
         public async Task<IActionResult> RemoveFromCollection(int bookId)
         {
             var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
