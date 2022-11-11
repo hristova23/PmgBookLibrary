@@ -1,5 +1,5 @@
 ﻿using Library.Data.Configuration;
-using Library.Infastructure.Data.Models;
+using Library.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,6 +17,51 @@ namespace Library.Data
             builder.ApplyConfiguration(new CategoryConfiguration());
             builder.ApplyConfiguration(new UserConfiguration());
             builder.ApplyConfiguration(new BookConfiguration());
+
+            builder.Entity<Book>(book =>
+            {
+                book
+                    .HasOne(c => c.Category)
+                    .WithMany(b => b.Books)
+                    .HasForeignKey(c => c.CategoryId)
+                    .OnDelete(DeleteBehavior.Restrict);
+            });
+
+            builder.Entity<FavoriteBook>(favoriteBook =>
+            {
+                favoriteBook
+                    .HasKey(fb => new { fb.UserId, fb.BookId });
+
+                favoriteBook
+                    .HasOne(a => a.User)
+                    .WithMany(f => f.FavoriteBooks)
+                    .HasForeignKey(a => a.UserId)
+                    .OnDelete(DeleteBehavior.Restrict);
+
+                favoriteBook
+                    .HasOne(b => b.Book)
+                    .WithMany(u => u.LikedByUsers)
+                    .HasForeignKey(b => b.BookId)
+                    .OnDelete(DeleteBehavior.Restrict);
+            });
+
+            builder.Entity<FinishedBook>(finishedBook =>
+            {
+                finishedBook
+                    .HasKey(fb => new { fb.UserId, fb.BookId });
+
+                finishedBook
+                    .HasOne(a => a.User)
+                    .WithMany(f => f.FinishedBooks)
+                    .HasForeignKey(a => a.UserId)
+                    .OnDelete(DeleteBehavior.Restrict);
+
+                finishedBook
+                    .HasOne(b => b.Book)
+                    .WithMany(u => u.ReadByUsers)
+                    .HasForeignKey(b => b.BookId)
+                    .OnDelete(DeleteBehavior.Restrict);
+            });
 
             builder.Entity<ApplicationUser>(user =>
             {

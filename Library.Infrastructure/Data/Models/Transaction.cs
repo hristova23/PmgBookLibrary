@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using static Library.Data.DataConstants.Transaction;
 
-namespace Library.Infastructure.Data.Models
+namespace Library.Infrastructure.Data.Models
 {
     public class Transaction
     {

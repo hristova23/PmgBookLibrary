@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Library.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(LibraryDbContext))]
-    [Migration("20221106163340_SeedDb")]
+    [Migration("20221111112620_SeedDb")]
     partial class SeedDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,7 +24,7 @@ namespace Library.Infrastructure.Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("Library.Data.Models.ApplicationUser", b =>
+            modelBuilder.Entity("Library.Infrastructure.Data.Models.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -96,45 +96,41 @@ namespace Library.Infrastructure.Data.Migrations
                         {
                             Id = "dea12856-c198-4129-b3f3-b893d8395082",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "85044dc2-834f-4498-b1ef-f39370ea5567",
+                            ConcurrencyStamp = "e8dc8c62-29c9-4f21-afe2-c8efc5db69dc",
                             Credits = 0,
                             Email = "agent@mail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAEAACcQAAAAEE55qRFgVsyLZfZ33X/Y+Icjt63KjL0amoCzdhbdZe0Stjosce7/lNYeT5VDo3rYCg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAENYFa24mUQihVXzj2XBJQVvA77Ga9zdJVCrNe2c3kFtO/M79c7KPtFgA8YyvACglug==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "f0a58908-e06c-4d7d-8329-8b417bbddac2",
+                            SecurityStamp = "dc1b91a1-4bc9-42e8-9fda-0a29b28aacf0",
                             TwoFactorEnabled = false,
-                            UserName = "agent@mail.com"
+                            UserName = "agent"
                         },
                         new
                         {
                             Id = "6d5800ce-d726-4fc8-83d9-d6b3ac1f591e",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "c5ccb707-8731-4a29-b639-f868442f3474",
+                            ConcurrencyStamp = "9532747e-fd41-4d87-a886-4faab8e32878",
                             Credits = 0,
                             Email = "guest@mail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAEAACcQAAAAEISUntBvRlU7vPwu/vs5n1RnTwpqmAmsXE3LSu4GIcyvygChUV/ZzeSxtzXuprYfWA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEBEzGx2/a8xlLG62p7pa5B/svnBbdPwJPugJvNkvYYywdrm8nQ8T64fch7LNKK6piQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "2142154a-c74e-45ad-a46e-0037ddb0a5a3",
+                            SecurityStamp = "319d011e-dc25-4a10-9676-1b484c85d08b",
                             TwoFactorEnabled = false,
-                            UserName = "guest@mail.com"
+                            UserName = "guest"
                         });
                 });
 
-            modelBuilder.Entity("Library.Data.Models.Book", b =>
+            modelBuilder.Entity("Library.Infrastructure.Data.Models.Book", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("AuthorId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
@@ -148,8 +144,9 @@ namespace Library.Infrastructure.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("Rating")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<string>("PublisherId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -158,9 +155,9 @@ namespace Library.Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AuthorId");
-
                     b.HasIndex("CategoryId");
+
+                    b.HasIndex("PublisherId");
 
                     b.ToTable("Books");
 
@@ -168,16 +165,15 @@ namespace Library.Infrastructure.Data.Migrations
                         new
                         {
                             Id = 5,
-                            AuthorId = "6d5800ce-d726-4fc8-83d9-d6b3ac1f591e",
                             CategoryId = 1,
                             Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
                             ImageUrl = "https://img.freepik.com/free-psd/book-cover-mock-up-arrangement_23-2148622888.jpg?w=826&t=st=1666106877~exp=1666107477~hmac=5dea3e5634804683bccfebeffdbde98371db37bc2d1a208f074292c862775e1b",
-                            Rating = 9.5m,
+                            PublisherId = "6d5800ce-d726-4fc8-83d9-d6b3ac1f591e",
                             Title = "Lorem Ipsum"
                         });
                 });
 
-            modelBuilder.Entity("Library.Data.Models.Category", b =>
+            modelBuilder.Entity("Library.Infrastructure.Data.Models.Category", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -222,7 +218,37 @@ namespace Library.Infrastructure.Data.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Library.Data.Models.Transaction", b =>
+            modelBuilder.Entity("Library.Infrastructure.Data.Models.FavoriteBook", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("BookId")
+                        .HasColumnType("int");
+
+                    b.HasKey("UserId", "BookId");
+
+                    b.HasIndex("BookId");
+
+                    b.ToTable("FavoriteBook");
+                });
+
+            modelBuilder.Entity("Library.Infrastructure.Data.Models.FinishedBook", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("BookId")
+                        .HasColumnType("int");
+
+                    b.HasKey("UserId", "BookId");
+
+                    b.HasIndex("BookId");
+
+                    b.ToTable("FinishedBook");
+                });
+
+            modelBuilder.Entity("Library.Infrastructure.Data.Models.Transaction", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -394,34 +420,72 @@ namespace Library.Infrastructure.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Library.Data.Models.Book", b =>
+            modelBuilder.Entity("Library.Infrastructure.Data.Models.Book", b =>
                 {
-                    b.HasOne("Library.Data.Models.ApplicationUser", "Author")
-                        .WithMany("Books")
-                        .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Library.Data.Models.Category", "Category")
+                    b.HasOne("Library.Infrastructure.Data.Models.Category", "Category")
                         .WithMany("Books")
                         .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Library.Infrastructure.Data.Models.ApplicationUser", "Publisher")
+                        .WithMany()
+                        .HasForeignKey("PublisherId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Author");
-
                     b.Navigation("Category");
+
+                    b.Navigation("Publisher");
                 });
 
-            modelBuilder.Entity("Library.Data.Models.Transaction", b =>
+            modelBuilder.Entity("Library.Infrastructure.Data.Models.FavoriteBook", b =>
                 {
-                    b.HasOne("Library.Data.Models.ApplicationUser", "Reciever")
+                    b.HasOne("Library.Infrastructure.Data.Models.Book", "Book")
+                        .WithMany("LikedByUsers")
+                        .HasForeignKey("BookId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Library.Infrastructure.Data.Models.ApplicationUser", "User")
+                        .WithMany("FavoriteBooks")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Book");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Library.Infrastructure.Data.Models.FinishedBook", b =>
+                {
+                    b.HasOne("Library.Infrastructure.Data.Models.Book", "Book")
+                        .WithMany("ReadByUsers")
+                        .HasForeignKey("BookId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Library.Infrastructure.Data.Models.ApplicationUser", "User")
+                        .WithMany("FinishedBooks")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Book");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Library.Infrastructure.Data.Models.Transaction", b =>
+                {
+                    b.HasOne("Library.Infrastructure.Data.Models.ApplicationUser", "Reciever")
                         .WithMany("RecievedTransactions")
                         .HasForeignKey("RecieverId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Library.Data.Models.ApplicationUser", "Sender")
+                    b.HasOne("Library.Infrastructure.Data.Models.ApplicationUser", "Sender")
                         .WithMany("SendedTransactions")
                         .HasForeignKey("SenderId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -443,7 +507,7 @@ namespace Library.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Library.Data.Models.ApplicationUser", null)
+                    b.HasOne("Library.Infrastructure.Data.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -452,7 +516,7 @@ namespace Library.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Library.Data.Models.ApplicationUser", null)
+                    b.HasOne("Library.Infrastructure.Data.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -467,7 +531,7 @@ namespace Library.Infrastructure.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Library.Data.Models.ApplicationUser", null)
+                    b.HasOne("Library.Infrastructure.Data.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -476,23 +540,32 @@ namespace Library.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Library.Data.Models.ApplicationUser", null)
+                    b.HasOne("Library.Infrastructure.Data.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Library.Data.Models.ApplicationUser", b =>
+            modelBuilder.Entity("Library.Infrastructure.Data.Models.ApplicationUser", b =>
                 {
-                    b.Navigation("Books");
+                    b.Navigation("FavoriteBooks");
+
+                    b.Navigation("FinishedBooks");
 
                     b.Navigation("RecievedTransactions");
 
                     b.Navigation("SendedTransactions");
                 });
 
-            modelBuilder.Entity("Library.Data.Models.Category", b =>
+            modelBuilder.Entity("Library.Infrastructure.Data.Models.Book", b =>
+                {
+                    b.Navigation("LikedByUsers");
+
+                    b.Navigation("ReadByUsers");
+                });
+
+            modelBuilder.Entity("Library.Infrastructure.Data.Models.Category", b =>
                 {
                     b.Navigation("Books");
                 });

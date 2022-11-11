@@ -11,9 +11,9 @@ namespace Library.Core.Models.Book
         public string Title { get; set; }
 
         [Required]
-        [StringLength(AuthorMaxLength, MinimumLength = AuthorMinLength)]
-        [Display(Name = "Author")]
-        public string Author { get; set; }
+        [StringLength(PublisherMaxLength, MinimumLength = PublisherMinLength)]
+        [Display(Name = "Publisher")]
+        public string Publisher { get; set; }
 
         [Required]
         [StringLength(DescriptionMaxLength, MinimumLength = DescriptionMinLength)]

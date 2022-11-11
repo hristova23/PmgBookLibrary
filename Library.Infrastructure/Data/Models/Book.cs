@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using static Library.Data.DataConstants.Book;
 
-namespace Library.Infastructure.Data.Models
+namespace Library.Infrastructure.Data.Models
 {
     public class Book
     {
@@ -14,10 +14,10 @@ namespace Library.Infastructure.Data.Models
         public string Title { get; set; } = null!;
 
         [Required]
-        public string AuthorId { get; set; } = null!;
+        public string PublisherId { get; set; } = null!;
 
-        [ForeignKey(nameof(AuthorId))]
-        public ApplicationUser Author { get; set; } = null!;
+        [ForeignKey(nameof(PublisherId))]
+        public ApplicationUser Publisher { get; set; } = null!;
 
         [Required]
         [StringLength(DescriptionMaxLength)]
@@ -27,12 +27,12 @@ namespace Library.Infastructure.Data.Models
         public string ImageUrl { get; set; } = null!;
 
         [Required]
-        public decimal Rating { get; set; }
-
-        [Required]
         public int CategoryId { get; set; }
 
         [ForeignKey(nameof(CategoryId))]
         public Category Category { get; set; } = null!;
+
+        public ICollection<FavoriteBook> LikedByUsers { get; set; } = new HashSet<FavoriteBook>();
+        public ICollection<FinishedBook> ReadByUsers { get; set; } = new HashSet<FinishedBook>();
     }
 }

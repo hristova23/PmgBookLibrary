@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using static Library.Data.DataConstants.Category;
 
-namespace Library.Infastructure.Data.Models
+namespace Library.Infrastructure.Data.Models
 {
     public class Category
     {

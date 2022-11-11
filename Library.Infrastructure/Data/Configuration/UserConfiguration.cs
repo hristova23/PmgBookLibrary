@@ -1,4 +1,4 @@
-﻿using Library.Infastructure.Data.Models;
+﻿using Library.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -20,24 +20,24 @@ namespace Library.Data.Configuration
             var user = new ApplicationUser()
             {
                 Id = "dea12856-c198-4129-b3f3-b893d8395082",
-                UserName = "agent@mail.com",
+                UserName = "agent",
                 Email = "agent@mail.com",
             };
 
             user.PasswordHash =
-                 hasher.HashPassword(user, "agent123");
+                 hasher.HashPassword(user, "#Agent23");
 
             users.Add(user);
 
             user = new ApplicationUser()
             {
                 Id = "6d5800ce-d726-4fc8-83d9-d6b3ac1f591e",
-                UserName = "guest@mail.com",
+                UserName = "guest",
                 Email = "guest@mail.com",
             };
 
             user.PasswordHash =
-            hasher.HashPassword(user, "guest123");
+            hasher.HashPassword(user, "#Guest23");
 
             users.Add(user);
 

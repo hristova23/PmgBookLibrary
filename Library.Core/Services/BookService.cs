@@ -2,6 +2,8 @@
 using Library.Core.Models;//
 using Library.Core.Models.Book;
 using Library.Infrastructure.Data.Common;
+using Library.Infrastructure.Data.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Library.Core.Services
 {
@@ -26,18 +28,16 @@ namespace Library.Core.Services
 
         public async Task<IEnumerable<BookViewModel>> GetAllAsync()
         {
-            throw new NotImplementedException();
-
-            //return await repo.AllReadonly<Book>()
-            //    .OrderByDescending(b => b.Id)
-            //    .Select(b => new BookViewModel()
-            //    {
-            //        Id = b.Id,
-            //        Title = b.Title,
-            //        Description = b.Description,
-            //        ImageUrl = b.ImageUrl
-            //    })
-            //    .ToListAsync();
+            return await repo.AllReadonly<Book>()
+                .OrderByDescending(b => b.Id)
+                .Select(b => new BookViewModel()
+                {
+                    Id = b.Id,
+                    Title = b.Title,
+                    Description = b.Description,
+                    ImageUrl = b.ImageUrl
+                })
+                .ToListAsync();
         }
 
         public Task<IEnumerable<CategoryViewModel>> GetCategoriesAsync()
