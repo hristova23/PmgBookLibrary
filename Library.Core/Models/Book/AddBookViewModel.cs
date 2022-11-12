@@ -11,11 +11,6 @@ namespace Library.Core.Models.Book
         public string Title { get; set; }
 
         [Required]
-        [StringLength(PublisherMaxLength, MinimumLength = PublisherMinLength)]
-        [Display(Name = "Publisher")]
-        public string Publisher { get; set; }
-
-        [Required]
         [StringLength(DescriptionMaxLength, MinimumLength = DescriptionMinLength)]
         [Display(Name = "Description")]
         public string Description { get; set; }
@@ -25,8 +20,8 @@ namespace Library.Core.Models.Book
         public string ImageUrl { get; set; }
 
         [Display(Name = "Category")]
-        public string Category { get; set; }
+        public int CategoryId { get; set; }
 
-        public IEnumerable<CategoryViewModel> Categories { get; set; }
+        public IEnumerable<CategoryViewModel> Categories { get; set; } = new List<CategoryViewModel>();
     }
 }

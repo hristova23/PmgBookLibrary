@@ -21,7 +21,9 @@ namespace Library.Data.Configuration
             {
                 Id = "dea12856-c198-4129-b3f3-b893d8395082",
                 UserName = "agent",
+                NormalizedUserName = "AGENT",
                 Email = "agent@mail.com",
+                NormalizedEmail = "AGENT@MAIL.COM"
             };
 
             user.PasswordHash =
@@ -33,7 +35,9 @@ namespace Library.Data.Configuration
             {
                 Id = "6d5800ce-d726-4fc8-83d9-d6b3ac1f591e",
                 UserName = "guest",
+                NormalizedUserName = "GUEST",
                 Email = "guest@mail.com",
+                NormalizedEmail = "GUEST@MAIL.COM"
             };
 
             user.PasswordHash =

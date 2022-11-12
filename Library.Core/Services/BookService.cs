@@ -1,5 +1,4 @@
 ﻿using Library.Core.Contracts;
-using Library.Core.Models;//
 using Library.Core.Models.Book;
 using Library.Infrastructure.Data.Common;
 using Library.Infrastructure.Data.Models;
@@ -16,14 +15,27 @@ namespace Library.Core.Services
             repo = _repo;
         }
 
-        public Task AddBookAsync(AddBookViewModel model)
+        public async Task<bool> BookExists(int bookId)
         {
-            throw new NotImplementedException();
+            return await repo.AllReadonly<Book>()
+                .AnyAsync(c => c.Id == bookId);
         }
 
-        public Task AddBookToCollectionAsync(int bookId, string userId)
+        public async Task<int> AddBookAsync(AddBookViewModel model, string userId)
         {
-            throw new NotImplementedException();
+            var book = new Book()
+            {
+                Title = model.Title,
+                PublisherId = userId,
+                CategoryId = model.CategoryId,
+                Description = model.Description,
+                ImageUrl = model.ImageUrl
+            };
+
+            await repo.AddAsync(book);
+            await repo.SaveChangesAsync();
+
+            return book.Id;
         }
 
         public async Task<IEnumerable<BookViewModel>> GetAllAsync()
@@ -42,38 +54,48 @@ namespace Library.Core.Services
                 .ToListAsync();
         }
 
-        public Task<IEnumerable<CategoryViewModel>> GetCategoriesAsync()
+        public async Task<IEnumerable<BookViewModel>> GetBooksByUserIdAsync(string userId)
+        {
+            return await repo.AllReadonly<Book>()
+                .Where(a => a.PublisherId == userId)
+                .Select(b => new BookViewModel()
+                {
+                    Id = b.Id,
+                    Title = b.Title,
+                    Publisher = b.Publisher.UserName,
+                    Category = b.Category.Name,
+                    Description = b.Description,
+                    ImageUrl = b.ImageUrl
+                })
+                .ToListAsync();
+        }
+
+        public async Task AddBookToCollectionAsync(int bookId, string userId)
+        {
+            var book = new FavoriteBook()
+            {
+                UserId = userId,
+                BookId = bookId
+            };
+
+            await repo.AddAsync(book);
+            await repo.SaveChangesAsync();
+        }
+
+        public async Task RemoveBookFromCollectionAsync(int bookId, string userId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<BookViewModel>> GetMyBooksAsync(string userId)
+        public async Task<int> DeleteBookAsync(int bookId)
         {
-            throw new NotImplementedException();
+            //check if book exists
+            await repo.DeleteAsync<Book>(bookId);
+            await repo.SaveChangesAsync();
+
+            return bookId;
         }
 
-        public Task RemoveBookFromCollectionAsync(int bookId, string userId)
-        {
-            throw new NotImplementedException();
-        }
-
-        //public async Task AddBookAsync(AddBookViewModel model)
-        //{
-        //    ApplicationUser author = await context.Users.FindAsync(); 
-
-        //    var entity = new Book()
-        //    {
-        //        AuthorId = model.Author.Id,
-        //        CategoryId = model.CategoryId,
-        //        Description = model.Description,
-        //        ImageUrl = model.ImageUrl,
-        //        Rating = model.Rating,
-        //        Title = model.Title
-        //    };
-
-        //    await context.Books.AddAsync(entity);
-        //    await context.SaveChangesAsync();
-        //}
 
         //public async Task AddBookToCollectionAsync(int bookId, string userId)
         //{
@@ -103,78 +125,6 @@ namespace Library.Core.Services
         //            Book = book,
         //            ApplicationUser = user
         //        });
-
-        //        await context.SaveChangesAsync();
-        //    }
-        //}
-
-        //public async Task<IEnumerable<BookViewModel>> GetAllAsync()
-        //{
-        //    var entities = await context.Books
-        //        .Include(m => m.Category)
-        //        .ToListAsync();
-
-        //    return entities
-        //        .Select(m => new BookViewModel()
-        //        {
-        //            Author = m.Author,
-        //            Category = m.Category.Name,
-        //            Id = m.Id,
-        //            ImageUrl = m.ImageUrl,
-        //            Rating = m.Rating,
-        //            Title = m.Title
-        //        });
-        //}
-
-        //public async Task<IEnumerable<Category>> GetCategoriesAsync()
-        //{
-        //    return await context.Categories.ToListAsync();
-        //}
-
-        //public async Task<IEnumerable<BookViewModel>> GetMyBooksAsync(string userId)
-        //{
-        //    var user = await context.Users
-        //        .Where(u => u.Id == userId)
-        //        .Include(u => u.ApplicationUsersBooks)
-        //        .ThenInclude(um => um.Book)
-        //        .ThenInclude(m => m.Category)
-        //        .FirstOrDefaultAsync();
-
-        //    if (user == null)
-        //    {
-        //        throw new ArgumentException("Invalid user ID");
-        //    }
-
-        //    return user.ApplicationUsersBooks
-        //        .Select(m => new BookViewModel()
-        //        {
-        //            Author = m.Book.Author,
-        //            Category = m.Book.Category.Name,
-        //            Description = m.Book.Description,
-        //            Id = m.BookId,
-        //            ImageUrl = m.Book.ImageUrl,
-        //            Title = m.Book.Title,
-        //            Rating = m.Book.Rating,
-        //        });
-        //}
-
-        //public async Task RemoveBookFromCollectionAsync(int bookId, string userId)
-        //{
-        //    var user = await context.Users
-        //        .Where(u => u.Id == userId)
-        //        .Include(u => u.ApplicationUsersBooks)
-        //        .FirstOrDefaultAsync();
-
-        //    if (user == null)
-        //    {
-        //        throw new ArgumentException("Invalid user ID");
-        //    }
-
-        //    var book = user.ApplicationUsersBooks.FirstOrDefault(m => m.BookId == bookId);
-
-        //    if (book != null)
-        //    {
-        //        user.ApplicationUsersBooks.Remove(book);
 
         //        await context.SaveChangesAsync();
         //    }
