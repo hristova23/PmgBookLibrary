@@ -15,10 +15,16 @@ namespace Library.Core.Services
             repo = _repo;
         }
 
-        public async Task<bool> BookExists(int bookId)
+        public async Task<bool> ExistsById(int bookId)
         {
             return await repo.AllReadonly<Book>()
                 .AnyAsync(c => c.Id == bookId);
+        }
+
+        public async Task<bool> IsInFavorites(string userId, int bookId)
+        {
+            return await repo.AllReadonly<FavoriteBook>()
+                .AnyAsync(c => c.UserId == userId && c.BookId == bookId);
         }
 
         public async Task<int> AddBookAsync(AddBookViewModel model, string userId)
@@ -38,10 +44,32 @@ namespace Library.Core.Services
             return book.Id;
         }
 
+        public async Task<BookViewModel> GetByIdAsync(int bookId)
+        {
+            var book = await repo.All<Book>()
+                .Where(b => b.Id == bookId)
+                .Include(b => b.Publisher)
+                .Include(b => b.Category)
+                .FirstOrDefaultAsync();
+
+            //var book = await repo.GetByIdAsync<Book>(bookId);
+            //var publisher = await repo.GetByIdAsync<ApplicationUser>(book.PublisherId);
+            //var category = await repo.GetByIdAsync<Category>(book.CategoryId);
+
+            return new BookViewModel()
+            {
+                Id = book.Id,
+                Title = book.Title,
+                Publisher = book.Publisher.UserName,
+                Category = book.Category.Name,
+                Description = book.Description,
+                ImageUrl = book.ImageUrl
+            };
+        }
         public async Task<IEnumerable<BookViewModel>> GetAllAsync()
         {
             return await repo.AllReadonly<Book>()
-                .OrderByDescending(b => b.Id)
+                //.OrderByDescending(b => b.Id)
                 .Select(b => new BookViewModel()
                 {
                     Id = b.Id,
@@ -70,6 +98,35 @@ namespace Library.Core.Services
                 .ToListAsync();
         }
 
+        public async Task<IEnumerable<BookViewModel>> GetFavoritesByUserIdAsync(string userId)
+        {
+            var user = await repo.All<ApplicationUser>()
+                .Where(u => u.Id == userId)
+                .Include(u => u.FavoriteBooks)
+                .ThenInclude(fb => fb.Book)
+                .ThenInclude(b => b.Category)
+                .Include(u => u.FavoriteBooks)
+                .ThenInclude(fb => fb.Book)
+                .ThenInclude(b => b.Publisher)
+                .FirstOrDefaultAsync();
+
+            if (user == null)
+            {
+                throw new ArgumentException("Invalid user ID");
+            }
+
+            return user.FavoriteBooks
+                .Select(b => new BookViewModel()
+                {
+                    Id = b.BookId,
+                    Title = b.Book.Title,
+                    Publisher = b.Book.Publisher.UserName,
+                    Category = b.Book.Category.Name,
+                    Description = b.Book.Description,
+                    ImageUrl = b.Book.ImageUrl,
+                });
+        }
+
         public async Task AddBookToCollectionAsync(int bookId, string userId)
         {
             var book = new FavoriteBook()
@@ -84,50 +141,12 @@ namespace Library.Core.Services
 
         public async Task RemoveBookFromCollectionAsync(int bookId, string userId)
         {
-            throw new NotImplementedException();
-        }
+            var recordToRemove = await repo.All<FavoriteBook>()
+                .Where(u => u.UserId == userId && u.BookId == bookId)
+                .FirstOrDefaultAsync();
 
-        public async Task<int> DeleteBookAsync(int bookId)
-        {
-            //check if book exists
-            await repo.DeleteAsync<Book>(bookId);
+            repo.Delete<FavoriteBook>(recordToRemove);
             await repo.SaveChangesAsync();
-
-            return bookId;
         }
-
-
-        //public async Task AddBookToCollectionAsync(int bookId, string userId)
-        //{
-        //    var user = await context.Users
-        //        .Where(u => u.Id == userId)
-        //        .Include(u => u.ApplicationUsersBooks)
-        //        .FirstOrDefaultAsync();
-
-        //    if (user == null)
-        //    {
-        //        throw new ArgumentException("Invalid user ID");
-        //    }
-
-        //    var book = await context.Books.FirstOrDefaultAsync(u => u.Id == bookId);
-
-        //    if (book == null)
-        //    {
-        //        throw new ArgumentException("Invalid Book ID");
-        //    }
-
-        //    if (!user.ApplicationUsersBooks.Any(m => m.BookId == bookId))
-        //    {
-        //        user.ApplicationUsersBooks.Add(new ApplicationUserBook()
-        //        {
-        //            BookId = book.Id,
-        //            ApplicationUserId = user.Id,
-        //            Book = book,
-        //            ApplicationUser = user
-        //        });
-
-        //        await context.SaveChangesAsync();
-        //    }
-        //}
     }
 }

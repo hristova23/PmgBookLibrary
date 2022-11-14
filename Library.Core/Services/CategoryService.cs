@@ -15,7 +15,7 @@ namespace Library.Core.Services
             repo = _repo;
         }
 
-        public async Task<bool> CategoryExists(int categoryId)
+        public async Task<bool> ExistsById(int categoryId)
         {
             return await repo.AllReadonly<Category>()
                 .AnyAsync(c => c.Id == categoryId);

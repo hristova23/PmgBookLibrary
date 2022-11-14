@@ -10,11 +10,13 @@ namespace Library.Controllers
     {
         private readonly IBookService bookService;
         private readonly ICategoryService categoryService;
+        private readonly IApplicationUserService applicationUserService;
 
-        public BooksController(IBookService _bookService, ICategoryService _categoryService)
+        public BooksController(IBookService _bookService, ICategoryService _categoryService, IApplicationUserService _applicationUserService)
         {
             bookService = _bookService;
             categoryService = _categoryService;
+            applicationUserService = _applicationUserService;
         }
 
         [HttpGet]
@@ -64,17 +66,33 @@ namespace Library.Controllers
 
         public async Task<IActionResult> AddToCollection(int bookId)
         {
-            try
+            if (!ModelState.IsValid)
             {
-                var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-                await bookService.AddBookToCollectionAsync(bookId, userId);
-            }
-            catch (Exception)
-            {
-                throw;
+                return View(bookId);
             }
 
-            return RedirectToAction(nameof(All));
+            var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+
+            if (!await bookService.ExistsById(bookId))
+            {
+                //Add error message
+
+                return View(bookId);
+            }
+
+            if (!await applicationUserService.ExistsById(userId))//is necessary??
+            {
+                //Add error message
+
+                return View(bookId);
+            }
+
+            if (!await bookService.IsInFavorites(userId, bookId))
+            {
+                await bookService.AddBookToCollectionAsync(bookId, userId);
+            }
+
+            return RedirectToAction(nameof(Favorites));
         }
         
         public async Task<IActionResult> Mine()
@@ -85,37 +103,25 @@ namespace Library.Controllers
             return View("Mine", model);
         }
 
-        public async Task<IActionResult> Delete(int bookId)
+        public async Task<IActionResult> Favorites()
         {
-            try
-            {
-                await bookService.DeleteBookAsync(bookId);
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+            var model = await bookService.GetFavoritesByUserIdAsync(userId);
 
-            return RedirectToAction(nameof(All));
+            return View("Favorites", model);
         }
 
-        public IActionResult Details(int id)
+        [AllowAnonymous]
+        public async Task<IActionResult> Details(int bookId)
         {
-            //var transaction = this.bookService.GetById(id);
+            var model = await bookService.GetByIdAsync(bookId);
 
-            //if (transaction == null)
-            //{
-            //    return this.NotFound();
-            //}
+            if (model == null)
+            {
+                return this.NotFound();
+            }
 
-            //return View(transaction);
-
-            return View();
-        }
-
-        public IActionResult Create()
-        {
-            return View();
+            return View("Details", model);
         }
 
         //[HttpPost]//?
@@ -124,7 +130,7 @@ namespace Library.Controllers
             var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
             await bookService.RemoveBookFromCollectionAsync(bookId, userId);
 
-            return RedirectToAction(nameof(Mine));
+            return RedirectToAction(nameof(All));
         }
     }
 }
