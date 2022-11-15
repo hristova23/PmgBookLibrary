@@ -1,0 +1,30 @@
+﻿@model IEnumerable<TransactionViewModel>
+@{
+    ViewData["Title"] = "Transactions Dashboard";
+}
+
+<div class="text-center">
+    <h1 class="display-4 p-3">Transactions</h1>
+    <table class="table">
+        <thead class="table-dark">
+            <tr>
+                <th scope="col" style="width: 30%">Sender</th>
+                <th scope="col" style="width: 30%">Receiver</th>
+                <th scope="col" style="width: 20%">Quantity</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var transaction in Model)
+            {
+                <tr role="button" onclick="location.href = '@(Url.Action("Details", "Transactions", new { id = transaction.Id }))'">
+                    <td>@transaction.SenderUsername</td>
+                    <td>@transaction.RecieverUsername</td>
+                    <td>@transaction.Quantity</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div class="container text-end">
+        <input type="button" class="btn-success" value="Create Transaction" onclick="location.href='@Url.Action("Add", "Transactions")'" />
+    </div>
+</div>

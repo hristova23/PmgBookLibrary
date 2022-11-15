@@ -7,11 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Library.Infrastructure\Library.Infrastructure.csproj" />
+    <PackageReference Include="HtmlSanitizer" Version="8.0.601" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\Transaction\" />
+    <ProjectReference Include="..\Library.Infrastructure\Library.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
