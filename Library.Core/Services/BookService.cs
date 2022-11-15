@@ -148,5 +148,11 @@ namespace Library.Core.Services
             repo.Delete<FavoriteBook>(recordToRemove);
             await repo.SaveChangesAsync();
         }
+
+        public async Task DeleteById(int bookId)
+        {
+            await repo.DeleteAsync<Book>(bookId);
+            await repo.SaveChangesAsync();
+        }
     }
 }

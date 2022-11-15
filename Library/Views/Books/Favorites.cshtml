@@ -19,8 +19,8 @@
                 <p>Category: @book.Category</p>
             </div>
 
-            <form class="input-group-sm" asp-controller="Books" asp-action="RemoveFromCollection" asp-route-bookId="@book.Id">
-                <input type="submit" value="Remove From Favorites" class="fs-6 btn btn-success mb-3 p-2" />
+            <form class="input-group-sm" asp-controller="Books" asp-action="Details" asp-route-bookId="@book.Id">
+                <input type="submit" value="Details" class="fs-6 btn btn-success mb-3 p-2" />
             </form>
         </div>
     }

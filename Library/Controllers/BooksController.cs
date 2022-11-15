@@ -8,6 +8,7 @@ namespace Library.Controllers
 {
     public class BooksController : BaseController
     {
+        //make property userId!
         private readonly IBookService bookService;
         private readonly ICategoryService categoryService;
         private readonly IApplicationUserService applicationUserService;
@@ -112,7 +113,7 @@ namespace Library.Controllers
         }
 
         [AllowAnonymous]
-        public async Task<IActionResult> Details(int bookId)
+        public async Task<IActionResult> Details(int bookId)//bool isInFavorites
         {
             var model = await bookService.GetByIdAsync(bookId);
 
@@ -120,6 +121,9 @@ namespace Library.Controllers
             {
                 return this.NotFound();
             }
+
+            var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+            ViewBag.IsInFavorites = await bookService.IsInFavorites(userId, bookId);
 
             return View("Details", model);
         }
@@ -130,7 +134,21 @@ namespace Library.Controllers
             var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
             await bookService.RemoveBookFromCollectionAsync(bookId, userId);
 
-            return RedirectToAction(nameof(All));
+            return RedirectToAction(nameof(Favorites));
+        }
+
+        public async Task<IActionResult> Delete(int bookId)
+        {
+            var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+
+            //The DELETE statement conflicted with the REFERENCE
+            //constraint "FK_FavoriteBook_Books_BookId".
+            //The conflict occurred in database "PmgBookLibrary",
+            //table "dbo.FavoriteBook", column 'BookId'
+
+            await bookService.DeleteById(bookId);
+
+            return RedirectToAction(nameof(Mine));
         }
     }
 }

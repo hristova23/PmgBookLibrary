@@ -21,5 +21,7 @@ namespace Library.Core.Contracts
         Task AddBookToCollectionAsync(int bookId, string userId);
 
         Task RemoveBookFromCollectionAsync(int bookId, string userId);
+
+        Task DeleteById(int bookId);
     }
 }
