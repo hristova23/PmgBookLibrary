@@ -19,6 +19,10 @@ namespace Library.Controllers
             userManager = _userManager;
             signInManager = _signInManager;
         }
+        public async Task<IActionResult> Details(int userId)
+        {
+            return View("Details");
+        }
 
         [HttpGet]
         [AllowAnonymous]

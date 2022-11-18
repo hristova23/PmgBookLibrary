@@ -4,8 +4,6 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create Transaction</h1>
-
 <script src="/lib/tinymce/tinymce.min.js" type="text/javascript"></script>
 <script type="text/javascript">
     tinymce.init({
@@ -37,7 +35,7 @@
             <span asp-validation-for="@Model.Message" class="text-danger"></span>
         </div>
         <hr />
-        <input type="submit" class="btn btn-dark"/>
+        <input type="submit" class="btn btn-dark" value="Add"/>
     </div>
 </form>
 

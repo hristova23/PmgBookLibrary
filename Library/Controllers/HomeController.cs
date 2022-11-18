@@ -7,10 +7,10 @@ namespace Library.Controllers
         [AllowAnonymous]
         public IActionResult Index()
         {
-            if (User?.Identity?.IsAuthenticated ?? false)
-            {
-                return RedirectToAction("All", "Books");
-            }
+            //if (User?.Identity?.IsAuthenticated ?? false)
+            //{
+            //    return RedirectToAction("All", "Books");
+            //}
 
             return View();
         }

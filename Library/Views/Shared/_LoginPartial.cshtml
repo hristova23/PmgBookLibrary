@@ -5,60 +5,60 @@
 
 @if (SignInManager.IsSignedIn(User))
 {
-    <li class="nav-item">
-        <a class="nav-link" asp-area="" asp-controller="Transactions" asp-action="All">Transactions</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" asp-area="" asp-controller="Transactions" asp-action="Add">Add Transaction</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" asp-area="" asp-controller="Books" asp-action="All">Books</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" asp-area="" asp-controller="Books" asp-action="Add">Add Book</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" asp-area="" asp-controller="Books" asp-action="Favorites">Favorite Books</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" asp-area="" asp-controller="Books" asp-action="Mine">My Books</a>
-    </li>
-    <li class="nav-item">
-        <form class="getstarted" asp-controller="User" asp-action="Logout" asp-route-id="@UserManager.GetUserId(User)">
-            <button type="submit" class="nav-link btn btn-link">Logout</button>
-        </form>
-    </li>
+	<li class="dropdown"><a href="#"><span>Books</span> <i class="bi bi-chevron-down"></i></a>
+		<ul>
+			<li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Books" asp-action="All">All Books</a></li>
+			<li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Books" asp-action="Add">Create Book</a></li>
+			<li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Books" asp-action="Favorites">Favorite Books</a></li>
+			<li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Books" asp-action="Mine">My Books</a></li>
+		</ul>
+	</li>
+
+	<li class="dropdown"><a href="#"><span>Transactions</span> <i class="bi bi-chevron-down"></i></a>
+		<ul>
+			<li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Transactions" asp-action="All">All Transactions</a></li>
+			<li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Transactions" asp-action="Add">Create Transaction</a></li>
+		</ul>
+	</li>
+
+	<li class="nav-item"><a class="nav-link" asp-area="" asp-controller="User" asp-action="Details">Profile</a></li>
+
+	<li class="nav-item">
+		<form class="getstarted" asp-controller="User" asp-action="Logout" asp-route-id="@UserManager.GetUserId(User)">
+			<button type="submit" class="nav-link btn btn-link">Logout</button>
+		</form>
+	</li>
 }
 else
 {
-    <li>
-        <a class="getstarted" asp-controller="User" asp-action="Register">Register</a>
-    </li>
-    <li>
-        <a class="getstarted" asp-controller="User" asp-action="Login">Login</a>
-    </li>
+	<li>
+		<a class="getstarted" asp-controller="User" asp-action="Register">Register</a>
+	</li>
+	<li>
+		<a class="getstarted" asp-controller="User" asp-action="Login">Login</a>
+	</li>
 }
 
 
 @*
-    USE THIS CODE IF YOU ARE SCAFFOLDING IDENTITY
-    <ul class="navbar-nav">
-    @if (SignInManager.IsSignedIn(User))
-    {
-    <li class="nav-item">
-    <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-    <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
-    </form>
-    </li>
-    }
-    else
-    {
-    <li class="nav-item">
-    <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
-    </li>
-    <li class="nav-item">
-    <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
-    </li>
-    }
-    </ul>
+	USE THIS CODE IF YOU ARE SCAFFOLDING IDENTITY
+	<ul class="navbar-nav">
+	@if (SignInManager.IsSignedIn(User))
+	{
+	<li class="nav-item">
+	<form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+	<button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
+	</form>
+	</li>
+	}
+	else
+	{
+	<li class="nav-item">
+	<a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
+	</li>
+	<li class="nav-item">
+	<a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
+	</li>
+	}
+	</ul>
 *@

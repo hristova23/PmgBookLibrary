@@ -1,4 +1,6 @@
-﻿namespace Library.Core.Models.Book
+﻿using Ganss.Xss;
+
+namespace Library.Core.Models.Book
 {
     public class BookViewModel
     {
@@ -9,6 +11,7 @@
         public string Publisher { get; set; }
 
         public string Description { get; set; }
+        public string SanitizedDescription => new HtmlSanitizer().Sanitize(this.Description);
 
         public string ImageUrl { get; set; }
 
