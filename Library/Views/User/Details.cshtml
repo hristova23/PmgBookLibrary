@@ -1,5 +1,8 @@
-﻿@model LoginViewModel
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
 
+@model ApplicationUserViewModel
 @{
     ViewData["Title"] = "Profile Details";
 }
