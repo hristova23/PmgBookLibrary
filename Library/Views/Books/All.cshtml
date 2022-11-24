@@ -4,14 +4,11 @@
     ViewBag.Title = "All Books";
 }
 
-<h2 class="text-center">@ViewBag.Title</h2>
-<hr />
-
 <div class="text-center row">
     @foreach (var book in Model)
     {
         <div class="card col-4" style="width: 20rem; ">
-            <img class="card-img-top" style="width: 18rem;"
+            <img class="card-img-top" style="height: 18rem; display: block;"
              src="@book.ImageUrl" alt="Book Image">
             <div class="card-body">
                 <h5 class="card-title mt-1">@book.Title</h5>
