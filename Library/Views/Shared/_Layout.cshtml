@@ -50,8 +50,9 @@
                 <ul>
                     <li><a asp-controller="Home" asp-action="Index" asp-fragment="about">About</a></li>
                     <li><a asp-controller="Home" asp-action="Index" asp-fragment="services">Services</a></li>
-                    <li><a asp-controller="Home" asp-action="Index" asp-fragment="portfolio">Portfolio</a></li>
+                    <li><a asp-controller="Home" asp-action="Index" asp-fragment="portfolio">Recent</a></li>
                     <li><a asp-controller="Home" asp-action="Index" asp-fragment="team">Team</a></li>
+                    <li><a asp-controller="Home" asp-action="Index" asp-fragment="faq">FAQ</a></li>
                     <li><a asp-controller="Home" asp-action="Index" asp-fragment="contact">Contact</a></li>
 
                     <partial name="_LoginPartial" />
@@ -100,24 +101,24 @@
                 <div class="row">
 
                     <div class="col-lg-3 col-md-6 footer-contact">
-                        <h3>Arsha</h3>
+                        <h3>Contact</h3>
                         <p>
-                            A108 Adam Street <br>
-                            New York, NY 535022<br>
-                            United States <br><br>
-                            <strong>Phone:</strong> +1 5589 55488 55<br>
-                            <strong>Email:</strong> info@example.com<br>
+                            Oborishte 1 Street <br>
+                            Dobrich, Bulgaria<br>
+                            Bulgaria <br><br>
+                            <strong>Phone:</strong> +359 88 835 2522<br>
+                            <strong>Email:</strong> victoriya.hristova04@gmail.com<br>
                         </p>
                     </div>
 
                     <div class="col-lg-3 col-md-6 footer-links">
                         <h4>Useful Links</h4>
                         <ul>
-                            <li><i class="bx bx-chevron-right"></i> <a href="#">Home</a></li>
-                            <li><i class="bx bx-chevron-right"></i> <a href="#">About us</a></li>
-                            <li><i class="bx bx-chevron-right"></i> <a href="#">Services</a></li>
-                            <li><i class="bx bx-chevron-right"></i> <a href="#">Terms of service</a></li>
-                            <li><i class="bx bx-chevron-right"></i> <a href="#">Privacy policy</a></li>
+                            <li><i class="bx bx-chevron-right"></i> <a asp-controller="Home" asp-action="Index">Home</a></li>
+                            <li><i class="bx bx-chevron-right"></i> <a asp-controller="Home" asp-action="Index" asp-fragment="about">About us</a></li>
+                            <li><i class="bx bx-chevron-right"></i> <a asp-controller="Home" asp-action="Index" asp-fragment="services">Services</a></li>
+                            <li><i class="bx bx-chevron-right"></i> <a asp-controller="Home" asp-action="Index" asp-fragment="">Terms of service</a></li>
+                            <li><i class="bx bx-chevron-right"></i> <a asp-controller="Home" asp-action="Index" asp-fragment="">Privacy policy</a></li>
                         </ul>
                     </div>
 
@@ -150,7 +151,7 @@
 
         <div class="container footer-bottom clearfix">
             <div class="copyright">
-                &copy; Copyright <strong><span>Arsha</span></strong>. All Rights Reserved
+                &copy; Copyright <strong><span>Arsha</span></strong>
             </div>
             <div class="credits">
                 <!-- All the links in the footer should remain intact. -->
