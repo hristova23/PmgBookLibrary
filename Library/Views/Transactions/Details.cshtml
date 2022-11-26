@@ -21,7 +21,7 @@
           <div class="mb-3 d-flex justify-content-between">
             <div>
               <span class="me-3 fw-bold">@Model.Date</span>
-              @if(Model.SenderUsername == User.Identity?.Name){
+              @if(Model.SenderEmail == User.Identity?.Name){
                 <span class="badge rounded-pill bg-danger">OUTGOING</span>
               }else{
                 <span class="badge rounded-pill bg-success">INCOMING</span>
@@ -43,13 +43,13 @@
                     <div class="flex-lg-grow-1 ms-3">
                       <span class="small">From:</span>
                       <h6 class="small mb-0">
-                          <a class="text-reset">@Model.SenderUsername</a>
+                          <a class="text-reset">@Model.SenderEmail</a>
                       </h6>
                     </div>
                   </div>
                 </td>
                 <td class="text-end">
-                    @Model.SenderUsername
+                    @Model.SenderEmail
                 </td>
               </tr>
 
@@ -62,13 +62,13 @@
                     <div class="flex-lg-grow-1 ms-3">
                       <span class="small">To:</span>
                       <h6 class="small mb-0">
-                          <a class="text-reset">@Model.RecieverUsername</a>
+                          <a class="text-reset">@Model.RecieverEmail</a>
                       </h6>
                     </div>
                   </div>
                 </td>
                 <td class="text-end">
-                    @Model.RecieverId
+                    @Model.RecieverEmail
                 </td>
               </tr>
               
@@ -93,12 +93,12 @@
         </div>
       </div>
       <!-- Message -->
-      @if(Model.SanitizedMessage!="" && Model.SanitizedMessage!= null){
+      @if(Model.Message!="" && Model.Message!= null){
         <div class="col-lg-12">
           <div class="card mb-4">
             <div class="card-body">
-              <h3 class="h6">Message from @Model.SenderUsername (@Model.SenderId)</h3>
-              <p>@Html.Raw(Model.SanitizedMessage)</p>
+              <h3 class="h6">Message from @Model.SenderEmail</h3>
+              <p>@Html.Raw(Model.Message)</p>
             </div>
           </div>
         </div>

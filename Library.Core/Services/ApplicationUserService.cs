@@ -15,6 +15,12 @@ namespace Library.Core.Services
             repo = _repo;
         }
 
+        public async Task<string> GetIdByEmailAsync(string email)
+        {
+            var user = await repo.All<ApplicationUser>().Where(u => u.Email == email).FirstAsync();
+            return user.Id;
+        }
+
         public async Task<bool> ExistsById(string userId)
         {
             return await repo.AllReadonly<ApplicationUser>()

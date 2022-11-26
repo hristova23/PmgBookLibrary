@@ -4,8 +4,8 @@ namespace Library.Core.Contracts
 {
     public interface ITransactionService
     {
-        Task<int> AddAsync(TransactionViewModel transaction);
+        Task<int> AddAsync(AddTransactionViewModel transaction, string senderId);
         Task<IEnumerable<TransactionViewModel>> GetAllByUserIdAsync(string userId);
-        Task<TransactionViewModel> FindByIdAsync(int transactionId);
+        Task<TransactionViewModel> GetByIdAsync(int transactionId);
     }
 }

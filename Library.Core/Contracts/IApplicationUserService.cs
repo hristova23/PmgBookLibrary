@@ -12,6 +12,8 @@ namespace Library.Core.Contracts
     {
         Task<bool> ExistsById(string userId);
 
+        Task<string> GetIdByEmailAsync(string email);
+
         Task<IEnumerable<ApplicationUserViewModel>> GetUsersAsync();
     }
 }

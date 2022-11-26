@@ -2,6 +2,7 @@
 using Library.Core.Models.Transaction;
 using Library.Infrastructure.Data.Common;
 using Library.Infrastructure.Data.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace Library.Core.Services
@@ -10,22 +11,36 @@ namespace Library.Core.Services
     {
         private readonly IRepository repo;
 
-        public TransactionService(IRepository _repo)
+        private readonly UserManager<ApplicationUser> userManager;
+
+        private readonly SignInManager<ApplicationUser> signInManager;
+
+        public TransactionService(IRepository _repo,
+            UserManager<ApplicationUser> _userManager,
+            SignInManager<ApplicationUser> _signInManager)
         {
             repo = _repo;
+            userManager = _userManager;
+            signInManager = _signInManager;
         }
 
-        public async Task<int> AddAsync(TransactionViewModel transaction)
+        public async Task<int> AddAsync(AddTransactionViewModel transaction, string senderId)
         {
+            ApplicationUser sender = await repo.GetByIdAsync<ApplicationUser>(senderId);//check if null
+            ApplicationUser reciever = await repo.GetByIdAsync<ApplicationUser>(transaction.RecieverId);//check if null
+
             var newTransaction = new Transaction()
             {
                 Id = transaction.Id,
                 Quantity = transaction.Quantity,
                 Message = transaction.Message,
-                SenderId = transaction.SenderId,
+                SenderId = senderId,
                 RecieverId = transaction.RecieverId,
                 Date = DateTime.UtcNow
             };
+
+            sender.Credits -= transaction.Quantity;
+            reciever.Credits += transaction.Quantity;
 
             await repo.AddAsync(newTransaction);
             await repo.SaveChangesAsync();
@@ -39,11 +54,8 @@ namespace Library.Core.Services
                 .Where(t => t.SenderId == userId || t.RecieverId == userId)
                 .Select(t => new TransactionViewModel()
                 {
-                    Id = t.Id,
-                    SenderId = t.SenderId,
-                    SenderUsername = t.Sender.UserName,
-                    RecieverId = t.RecieverId,
-                    RecieverUsername = t.Reciever.UserName,
+                    SenderEmail = t.Sender.Email,
+                    RecieverEmail = t.Reciever.Email,
                     Message = t.Message, //SanitizedMessage?
                     Quantity = t.Quantity,
                     Date = t.Date
@@ -51,7 +63,7 @@ namespace Library.Core.Services
                 .ToListAsync();
         }
 
-        public async Task<TransactionViewModel> FindByIdAsync(int transactionId)
+        public async Task<TransactionViewModel> GetByIdAsync(int transactionId)
         {
             var transaction = await repo.All<Transaction>()
                 .Where(t => t.Id == transactionId)
@@ -59,13 +71,12 @@ namespace Library.Core.Services
                 .Include(t => t.Reciever)
                 .FirstOrDefaultAsync();
 
+            //var transaction = await repo.GetByIdAsync<Transaction>(transactionId);
+
             return new TransactionViewModel()
             {
-                Id = transaction.Id,
-                SenderId = transaction.SenderId,
-                SenderUsername = transaction.Sender.UserName,
-                RecieverId = transaction.RecieverId,
-                RecieverUsername = transaction.Reciever.UserName,
+                SenderEmail = transaction.Sender.Email,
+                RecieverEmail = transaction.Reciever.Email,
                 Message = transaction.Message, //SanitizedMessage?
                 Quantity = transaction.Quantity,
                 Date = transaction.Date

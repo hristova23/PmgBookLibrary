@@ -46,13 +46,13 @@ namespace Library.Controllers
 
             try
             {
-                //find sender by username + id
-                //find reciever by username + id
-                //check if quantity is valid and in demand
-                await transactionService.AddAsync(new TransactionViewModel
+                await transactionService.AddAsync(new AddTransactionViewModel
                 {
-
-                });
+                    SenderId = this.UserId,
+                    RecieverId = applicationUserService.GetIdByEmailAsync(model.RecieverEmail).Result,
+                    Quantity = model.Quantity,
+                    Message = model.Message//sanitized message?
+                }, this.UserId);
 
                 return RedirectToAction(nameof(All));
             }
@@ -62,6 +62,18 @@ namespace Library.Controllers
 
                 return View(model);
             }
+        }
+
+        public async Task<IActionResult> Details(int transactionId)
+        {
+            var model = await transactionService.GetByIdAsync(transactionId);
+
+            if (model == null)
+            {
+                return this.NotFound();
+            }
+
+            return View("Details", model);
         }
     }
 }

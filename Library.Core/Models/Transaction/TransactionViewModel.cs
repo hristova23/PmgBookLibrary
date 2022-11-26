@@ -1,5 +1,9 @@
-﻿using Ganss.Xss;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Library.Core.Models.Transaction
 {
@@ -7,23 +11,13 @@ namespace Library.Core.Models.Transaction
     {
         public int Id { get; set; }
 
-        public string SenderId { get; set; }
+        public string SenderEmail { get; set; }
 
-        public string SenderUsername { get; set; }
+        public string RecieverEmail { get; set; }
 
-        public string RecieverId { get; set; }
-
-        [Required(ErrorMessage = "Username is required.")]
-        [Display(Name = "Username")]
-        public string RecieverUsername { get; set; }
+        public int Quantity { get; set; }
 
         public string? Message { get; set; }
-        public string SanitizedMessage => new HtmlSanitizer().Sanitize(this.Message);
-
-        [Range(1, 1000, ErrorMessage = "Please enter a number between 0 and 1000.")]//=> data constants
-        [Required(ErrorMessage = "Please enter a valid number.")]
-        [DataType(DataType.Currency)]
-        public int Quantity { get; set; }
 
         public DateTime Date { get; set; }
     }

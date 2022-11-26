@@ -17,8 +17,8 @@
             @foreach (var transaction in Model)
             {
                 <tr role="button" onclick="location.href = '@(Url.Action("Details", "Transactions", new { id = transaction.Id }))'">
-                    <td>@transaction.SenderUsername</td>
-                    <td>@transaction.RecieverUsername</td>
+                    <td>@transaction.SenderEmail</td>
+                    <td>@transaction.RecieverEmail</td>
                     <td>@transaction.Quantity</td>
                 </tr>
             }
