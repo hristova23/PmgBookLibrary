@@ -29,7 +29,7 @@ namespace Library.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Add()
+        public IActionResult Add()
         {
             var model = new AddTransactionViewModel();
 
@@ -44,24 +44,19 @@ namespace Library.Controllers
                 return View(model);
             }
 
-            try
-            {
-                await transactionService.AddAsync(new AddTransactionViewModel
-                {
-                    SenderId = this.UserId,
-                    RecieverId = applicationUserService.GetIdByEmailAsync(model.RecieverEmail).Result,
-                    Quantity = model.Quantity,
-                    Message = model.Message//sanitized message?
-                }, this.UserId);
+            string senderEmail = applicationUserService.GetUserByIdAsync(this.UserId).Result.Email;
+            string recieverId = applicationUserService.GetIdByEmailAsync(model.RecieverEmail).Result;
 
-                return RedirectToAction(nameof(All));
-            }
-            catch (Exception)
+            await transactionService.AddAsync(new TransactionViewModel
             {
-                ModelState.AddModelError("", "Something went wrong");
+                SenderEmail = senderEmail,
+                RecieverEmail = model.RecieverEmail,
+                Quantity = model.Quantity,
+                Message = model.SanitizedMessage,
+                Date = DateTime.UtcNow
+            }, this.UserId, recieverId);
 
-                return View(model);
-            }
+            return RedirectToAction("All");
         }
 
         public async Task<IActionResult> Details(int transactionId)

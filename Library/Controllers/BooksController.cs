@@ -9,12 +9,14 @@ namespace Library.Controllers
     public class BooksController : BaseController
     {
         //make property userId!
+        private readonly IWebHostEnvironment hostingEnviroment;
         private readonly IBookService bookService;
         private readonly ICategoryService categoryService;
         private readonly IApplicationUserService applicationUserService;
 
-        public BooksController(IBookService _bookService, ICategoryService _categoryService, IApplicationUserService _applicationUserService)
+        public BooksController(IWebHostEnvironment _hostingEnviroment, IBookService _bookService, ICategoryService _categoryService, IApplicationUserService _applicationUserService)
         {
+            hostingEnviroment = _hostingEnviroment;
             bookService = _bookService;
             categoryService = _categoryService;
             applicationUserService = _applicationUserService;
@@ -32,7 +34,7 @@ namespace Library.Controllers
         [HttpGet]
         public async Task<IActionResult> Add()
         {
-            var model = new AddBookViewModel()
+            var model = new UploadBookViewModel()
             {
                 Categories = await categoryService.GetCategoriesAsync()
             };
@@ -41,7 +43,7 @@ namespace Library.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add(AddBookViewModel model)
+        public async Task<IActionResult> Add(UploadBookViewModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -52,8 +54,26 @@ namespace Library.Controllers
 
             try
             {
+                string uniqueFileName = null;
+                if (model.Image != null)
+                {
+                    string uploadsFolder = Path.Combine(hostingEnviroment.WebRootPath, "img/bookcovers");
+                    uniqueFileName = Guid.NewGuid().ToString() + "_" + model.Image.FileName;
+                    string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                    model.Image.CopyTo(new FileStream(filePath, FileMode.Create));
+                }
+
                 var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-                await bookService.AddBookAsync(model, userId);
+
+                var bookToAdd = new AddBookViewModel
+                {
+                    Title = model.Title,
+                    Description = model.Description,
+                    ImageUrl = uniqueFileName,
+                    CategoryId = model.CategoryId
+                };
+
+                await bookService.AddBookAsync(bookToAdd, userId);
 
                 return RedirectToAction(nameof(All));
             }
@@ -63,6 +83,47 @@ namespace Library.Controllers
 
                 return View(model);
             }
+        }
+
+        
+        public async Task<IActionResult> Mine()
+        {
+            var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+            var model = await bookService.GetBooksByUserIdAsync(userId);
+
+            return View("Mine", model);
+        }
+
+        public async Task<IActionResult> Favorites()
+        {
+            var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+            var model = await bookService.GetFavoritesByUserIdAsync(userId);
+
+            return View("Favorites", model);
+        }
+
+        public async Task<IActionResult> Finished()
+        {
+            var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+            var model = await bookService.GetFinishedByUserIdAsync(userId);
+
+            return View("Finished", model);
+        }
+
+        [AllowAnonymous]
+        public async Task<IActionResult> Details(int bookId)//bool isInFavorites
+        {
+            var model = await bookService.GetByIdAsync(bookId);
+
+            if (model == null)
+            {
+                return this.NotFound();
+            }
+
+            var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+            ViewBag.IsInFavorites = await bookService.IsInFavorites(userId, bookId);
+
+            return View("Details", model);
         }
 
         public async Task<IActionResult> AddToCollection(int bookId)
@@ -95,39 +156,6 @@ namespace Library.Controllers
 
             return RedirectToAction(nameof(Favorites));
         }
-        
-        public async Task<IActionResult> Mine()
-        {
-            var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-            var model = await bookService.GetBooksByUserIdAsync(userId);
-
-            return View("Mine", model);
-        }
-
-        public async Task<IActionResult> Favorites()
-        {
-            var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-            var model = await bookService.GetFavoritesByUserIdAsync(userId);
-
-            return View("Favorites", model);
-        }
-
-        [AllowAnonymous]
-        public async Task<IActionResult> Details(int bookId)//bool isInFavorites
-        {
-            var model = await bookService.GetByIdAsync(bookId);
-
-            if (model == null)
-            {
-                return this.NotFound();
-            }
-
-            var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-            ViewBag.IsInFavorites = await bookService.IsInFavorites(userId, bookId);
-
-            return View("Details", model);
-        }
-
         //[HttpPost]//?
         public async Task<IActionResult> RemoveFromCollection(int bookId)
         {

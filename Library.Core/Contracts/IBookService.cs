@@ -18,6 +18,8 @@ namespace Library.Core.Contracts
 
         Task<IEnumerable<BookViewModel>> GetFavoritesByUserIdAsync(string userId);
 
+        Task<IEnumerable<BookViewModel>> GetFinishedByUserIdAsync(string userId);
+
         Task AddBookToCollectionAsync(int bookId, string userId);
 
         Task RemoveBookFromCollectionAsync(int bookId, string userId);

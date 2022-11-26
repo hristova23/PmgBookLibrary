@@ -15,6 +15,19 @@ namespace Library.Core.Services
             repo = _repo;
         }
 
+        public async Task<ApplicationUserViewModel> GetUserByIdAsync(string id)
+        {
+            ApplicationUser user = await repo.GetByIdAsync<ApplicationUser>(id);
+
+            return new ApplicationUserViewModel()
+            {
+                Id = user.Id,
+                Username = user.UserName,
+                Email = user.Email,
+                Credits = user.Credits
+            };
+        }
+
         public async Task<string> GetIdByEmailAsync(string email)
         {
             var user = await repo.All<ApplicationUser>().Where(u => u.Email == email).FirstAsync();

@@ -1,4 +1,4 @@
-﻿@model AddBookViewModel
+﻿@model UploadBookViewModel
 
 @{
 	ViewBag.Title = "Add Book";
@@ -17,7 +17,7 @@
 	}); 
 </script>
 
-		<form asp-action="Add" method="post">
+		<form enctype="multipart/form-data" asp-action="Add" method="post">
 			<div class="card p-4">
 				<div class="mb-3">
 				<label asp-for="@Model.Title" class="form-label">Title</label>
@@ -25,9 +25,11 @@
 				<span asp-validation-for="Title" class="text-danger"></span>
 			</div>
 			<div class="mb-3">
-				<label asp-for="@Model.ImageUrl" class="form-label">Image URL</label>
-				<input asp-for="@Model.ImageUrl" class="form-control" aria-required="true" />
-				<span asp-validation-for="ImageUrl" class="text-danger"></span>
+				<label asp-for="@Model.Image" class="form-label">Cover image</label>
+				<div class="custom-file">
+					<input asp-for="@Model.Image" class="form-control custom-file-input" aria-required="true" />
+				</div>
+				<span asp-validation-for="Image" class="text-danger"></span>
 			</div>
 			<div class="mb-3">
 				<label asp-for="@Model.CategoryId" class="form-label">Category</label>

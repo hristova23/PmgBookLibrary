@@ -66,6 +66,7 @@ namespace Library.Core.Services
                 ImageUrl = book.ImageUrl
             };
         }
+
         public async Task<IEnumerable<BookViewModel>> GetAllAsync()
         {
             return await repo.AllReadonly<Book>()
@@ -116,6 +117,35 @@ namespace Library.Core.Services
             }
 
             return user.FavoriteBooks
+                .Select(b => new BookViewModel()
+                {
+                    Id = b.BookId,
+                    Title = b.Book.Title,
+                    Publisher = b.Book.Publisher.UserName,
+                    Category = b.Book.Category.Name,
+                    Description = b.Book.Description,
+                    ImageUrl = b.Book.ImageUrl,
+                });
+        }
+
+        public async Task<IEnumerable<BookViewModel>> GetFinishedByUserIdAsync(string userId)
+        {
+            var user = await repo.All<ApplicationUser>()
+                .Where(u => u.Id == userId)
+                .Include(u => u.FinishedBooks)
+                .ThenInclude(fb => fb.Book)
+                .ThenInclude(b => b.Category)
+                .Include(u => u.FinishedBooks)
+                .ThenInclude(fb => fb.Book)
+                .ThenInclude(b => b.Publisher)
+                .FirstOrDefaultAsync();
+
+            if (user == null)
+            {
+                throw new ArgumentException("Invalid user ID");
+            }
+
+            return user.FinishedBooks
                 .Select(b => new BookViewModel()
                 {
                     Id = b.BookId,

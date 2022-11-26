@@ -24,10 +24,10 @@ namespace Library.Core.Services
             signInManager = _signInManager;
         }
 
-        public async Task<int> AddAsync(AddTransactionViewModel transaction, string senderId)
+        public async Task<int> AddAsync(TransactionViewModel transaction, string senderId, string recieverId)
         {
             ApplicationUser sender = await repo.GetByIdAsync<ApplicationUser>(senderId);//check if null
-            ApplicationUser reciever = await repo.GetByIdAsync<ApplicationUser>(transaction.RecieverId);//check if null
+            ApplicationUser reciever = await repo.GetByIdAsync<ApplicationUser>(recieverId);//check if null
 
             var newTransaction = new Transaction()
             {
@@ -35,7 +35,7 @@ namespace Library.Core.Services
                 Quantity = transaction.Quantity,
                 Message = transaction.Message,
                 SenderId = senderId,
-                RecieverId = transaction.RecieverId,
+                RecieverId = recieverId,
                 Date = DateTime.UtcNow
             };
 
@@ -65,20 +65,20 @@ namespace Library.Core.Services
 
         public async Task<TransactionViewModel> GetByIdAsync(int transactionId)
         {
-            var transaction = await repo.All<Transaction>()
-                .Where(t => t.Id == transactionId)
-                .Include(t => t.Sender)
-                .Include(t => t.Reciever)
-                .FirstOrDefaultAsync();
+            //var transaction = await repo.All<Transaction>()
+            //    .Where(t => t.Id == transactionId)
+            //    .Include(t => t.Sender)
+            //    .Include(t => t.Reciever)
+            //    .FirstOrDefaultAsync();
 
-            //var transaction = await repo.GetByIdAsync<Transaction>(transactionId);
+            var transaction = await repo.GetByIdAsync<Transaction>(transactionId);
 
             return new TransactionViewModel()
             {
                 SenderEmail = transaction.Sender.Email,
                 RecieverEmail = transaction.Reciever.Email,
-                Message = transaction.Message, //SanitizedMessage?
                 Quantity = transaction.Quantity,
+                Message = transaction.Message,
                 Date = transaction.Date
             };
         }
