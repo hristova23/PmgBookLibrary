@@ -1,7 +1,7 @@
 ﻿@model AddTransactionViewModel
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Create Transaction";
 }
 
 <script src="/lib/tinymce/tinymce.min.js" type="text/javascript"></script>
@@ -16,6 +16,10 @@
         ]
     }); 
 </script>
+
+<div style="padding: 20px 0; margin-top: 20px;">
+	<h1>@ViewBag.Title</h1>
+</div>
 
 @if (ViewBag.ErrorMessage != null)
 {
