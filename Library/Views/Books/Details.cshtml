@@ -47,9 +47,7 @@
 					}
 				</div>
 				<div>
-					<form class="input-group-sm" asp-controller="Books" asp-action="AddToFinished" asp-route-bookId="@Model.Id">
-						<input type="submit" value="Add To Finished Books" class="fs-6 btn btn-success mb-3 p-2" />
-					</form>
+					
 					@if (ViewBag.IsInFavorites == true)
 					{
 					<form class="input-group-sm" asp-controller="Books" asp-action="RemoveFromCollection" asp-route-bookId="@Model.Id">
@@ -61,6 +59,25 @@
 					<form class="input-group-sm" asp-controller="Books" asp-action="AddToCollection" asp-route-bookId="@Model.Id">
 						<input type="submit" value="Add To Favorites" class="fs-6 btn btn-success mb-3 p-2" />
 					</form>
+					}
+
+					@if(ViewBag.IsMine){
+					<form class="input-group-sm" asp-controller="Books" asp-action="Delete" asp-route-bookId="@Model.Id">
+						<input type="submit" value="Delete" class="fs-6 btn btn-danger mb-3 p-2" />
+					</form>
+					}
+					else
+					{
+						@if (ViewBag.IsInFinished == true)
+						{
+						<button type="button" disabled class="fs-6 btn btn-secondary mb-3 p-2" >Finished</button>
+						}
+						else
+						{
+						<form class="input-group-sm" asp-controller="Books" asp-action="FinishBook" asp-route-bookId="@Model.Id">
+							<input type="submit" value="Finish Books" class="fs-6 btn btn-success mb-3 p-2" />
+						</form>
+						}
 					}
 				</div>
 			</div>

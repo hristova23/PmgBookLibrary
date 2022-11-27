@@ -16,7 +16,7 @@ namespace Library.Core.Models.Transaction
 
         public string? SanitizedMessage => new HtmlSanitizer().Sanitize(this.Message);
 
-        [Range(1, 1000, ErrorMessage = "Please enter a number between 0 and 1000.")]//=> data constants
+        [Range(1, int.MaxValue, ErrorMessage = "Please enter a valid positive number.")]
         [Required(ErrorMessage = "Please enter a valid number.")]
         [DataType(DataType.Currency)]
         [Display(Name = "Quantity")]

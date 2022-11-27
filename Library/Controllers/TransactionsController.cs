@@ -44,31 +44,40 @@ namespace Library.Controllers
                 return View(model);
             }
 
-            string senderEmail = applicationUserService.GetUserByIdAsync(this.UserId).Result.Email;
-            string recieverId = applicationUserService.GetIdByEmailAsync(model.RecieverEmail).Result;
+            var sender = await applicationUserService.GetByIdAsync(this.UserId);
+            var reciever = await applicationUserService.GetByEmailAsync(model.RecieverEmail);
+
+            if (sender.Email == reciever.Email)
+            {
+                ViewBag.ErrorMessage = "You can't send credits to yourself!";
+
+                return View(model);
+            }
+
+            if (reciever == null)
+            {
+                ViewBag.ErrorMessage = "There is no user associated with this email";
+
+                return View(model);
+            }
+
+            if (model.Quantity > sender.Credits)
+            {
+                ViewBag.ErrorMessage = $"Cannot send {model.Quantity} credits. You only have {sender.Credits}";
+
+                return View(model);
+            }
 
             await transactionService.AddAsync(new TransactionViewModel
             {
-                SenderEmail = senderEmail,
+                SenderEmail = sender.Email,
                 RecieverEmail = model.RecieverEmail,
                 Quantity = model.Quantity,
                 Message = model.SanitizedMessage,
                 Date = DateTime.UtcNow
-            }, this.UserId, recieverId);
+            }, this.UserId, reciever.Id);
 
             return RedirectToAction("All");
-        }
-
-        public async Task<IActionResult> Details(int transactionId)
-        {
-            var model = await transactionService.GetByIdAsync(transactionId);
-
-            if (model == null)
-            {
-                return this.NotFound();
-            }
-
-            return View("Details", model);
         }
     }
 }

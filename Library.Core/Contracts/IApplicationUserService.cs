@@ -10,12 +10,14 @@ namespace Library.Core.Contracts
 {
     public interface IApplicationUserService
     {
+        Task AddCredits(string userId, int creditsCount);
+
+        Task<ApplicationUserViewModel> GetByIdAsync(string id);
+
+        Task<ApplicationUserViewModel> GetByEmailAsync(string email);
+
         Task<bool> ExistsById(string userId);
 
-        Task<ApplicationUserViewModel> GetUserByIdAsync(string id);
-
-        Task<string> GetIdByEmailAsync(string email);
-
-        Task<IEnumerable<ApplicationUserViewModel>> GetUsersAsync();
+        Task<IEnumerable<ApplicationUserViewModel>> GetAllAsync();
     }
 }

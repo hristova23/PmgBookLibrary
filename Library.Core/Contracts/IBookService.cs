@@ -6,7 +6,11 @@ namespace Library.Core.Contracts
     {
         Task<bool> ExistsById(int bookId);
 
+        Task<BookViewModel> GetByIdAsync(int bookId);
+
         Task<bool> IsInFavorites(string userId, int bookId);
+
+        Task<bool> IsInFinished(string userId, int bookId);
 
         Task<int> AddBookAsync(AddBookViewModel model, string userId);
 
@@ -14,15 +18,15 @@ namespace Library.Core.Contracts
 
         Task<IEnumerable<BookViewModel>> GetBooksByUserIdAsync(string userId);
 
-        Task<BookViewModel> GetByIdAsync(int bookId);
-
         Task<IEnumerable<BookViewModel>> GetFavoritesByUserIdAsync(string userId);
 
         Task<IEnumerable<BookViewModel>> GetFinishedByUserIdAsync(string userId);
 
-        Task AddBookToCollectionAsync(int bookId, string userId);
+        Task AddToFinishedAsync(int bookId, string userId);
 
-        Task RemoveBookFromCollectionAsync(int bookId, string userId);
+        Task AddToFavoritesAsync(int bookId, string userId);
+
+        Task RemoveFromFavoritesAsync(int bookId, string userId);
 
         Task DeleteById(int bookId);
     }

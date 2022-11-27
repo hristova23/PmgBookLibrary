@@ -10,13 +10,13 @@
             <tr>
                 <th scope="col" style="width: 30%">Sender</th>
                 <th scope="col" style="width: 30%">Receiver</th>
-                <th scope="col" style="width: 20%">Quantity</th>
+                <th scope="col" style="width: 25%">Quantity</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var transaction in Model)
             {
-                <tr role="button" onclick="location.href = '@(Url.Action("Details", "Transactions", new { id = transaction.Id }))'">
+                <tr>
                     <td>@transaction.SenderEmail</td>
                     <td>@transaction.RecieverEmail</td>
                     <td>@transaction.Quantity</td>

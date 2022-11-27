@@ -17,6 +17,13 @@
     }); 
 </script>
 
+@if (ViewBag.ErrorMessage != null)
+{
+    <div class="alert alert-danger">
+        <p>@ViewBag.ErrorMessage</p>
+    </div>
+}
+
 <form asp-action="Add" method="post">
     <div class="card p-4">
         <div>

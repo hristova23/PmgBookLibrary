@@ -15,8 +15,13 @@ namespace Library.Core.Services
             repo = _repo;
         }
 
-        public async Task<ApplicationUserViewModel> GetUserByIdAsync(string id)
+        public async Task<ApplicationUserViewModel> GetByIdAsync(string id)
         {
+            if (await this.ExistsById(id) == false)
+            {
+                return null;
+            }
+
             ApplicationUser user = await repo.GetByIdAsync<ApplicationUser>(id);
 
             return new ApplicationUserViewModel()
@@ -28,10 +33,23 @@ namespace Library.Core.Services
             };
         }
 
-        public async Task<string> GetIdByEmailAsync(string email)
+        public async Task<ApplicationUserViewModel?> GetByEmailAsync(string email)
         {
-            var user = await repo.All<ApplicationUser>().Where(u => u.Email == email).FirstAsync();
-            return user.Id;
+            var user = await repo.All<ApplicationUser>()
+                .Where(u => u.Email == email).FirstOrDefaultAsync();
+
+            if (user == null)
+            {
+                return null;
+            }
+
+            return new ApplicationUserViewModel()
+            {
+                Id = user.Id,
+                Username = user.UserName,
+                Email = user.Email,
+                Credits = user.Credits
+            };
         }
 
         public async Task<bool> ExistsById(string userId)
@@ -40,7 +58,7 @@ namespace Library.Core.Services
                 .AnyAsync(u => u.Id == userId);
         }
 
-        public async Task<IEnumerable<ApplicationUserViewModel>> GetUsersAsync()
+        public async Task<IEnumerable<ApplicationUserViewModel>> GetAllAsync()
         {
             return await repo.AllReadonly<ApplicationUser>()
                 .OrderBy(u => u.UserName)
@@ -52,6 +70,14 @@ namespace Library.Core.Services
                     Credits = u.Credits
                 })
                 .ToListAsync();
+        }
+
+        public async Task AddCredits(string userId, int creditsCount)
+        {
+            var user = await repo.GetByIdAsync<ApplicationUser>(userId);
+            user.Credits += creditsCount;
+
+            await repo.SaveChangesAsync();
         }
     }
 }

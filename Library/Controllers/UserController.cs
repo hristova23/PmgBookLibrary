@@ -19,9 +19,19 @@ namespace Library.Controllers
             userManager = _userManager;
             signInManager = _signInManager;
         }
-        public async Task<IActionResult> Details(int userId)
+        public async Task<IActionResult> Details(string userId)
         {
-            return View("Details");
+            var user = await userManager.FindByIdAsync(userId);
+
+            var model = new ApplicationUserViewModel()
+            {
+                Id = user.Id,
+                Username = user.UserName,
+                Email = user.Email,
+                Credits = user.Credits
+            };
+
+            return View("Details", model);
         }
 
         [HttpGet]

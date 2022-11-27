@@ -128,36 +128,7 @@ namespace Library.Core.Services
                 });
         }
 
-        public async Task<IEnumerable<BookViewModel>> GetFinishedByUserIdAsync(string userId)
-        {
-            var user = await repo.All<ApplicationUser>()
-                .Where(u => u.Id == userId)
-                .Include(u => u.FinishedBooks)
-                .ThenInclude(fb => fb.Book)
-                .ThenInclude(b => b.Category)
-                .Include(u => u.FinishedBooks)
-                .ThenInclude(fb => fb.Book)
-                .ThenInclude(b => b.Publisher)
-                .FirstOrDefaultAsync();
-
-            if (user == null)
-            {
-                throw new ArgumentException("Invalid user ID");
-            }
-
-            return user.FinishedBooks
-                .Select(b => new BookViewModel()
-                {
-                    Id = b.BookId,
-                    Title = b.Book.Title,
-                    Publisher = b.Book.Publisher.UserName,
-                    Category = b.Book.Category.Name,
-                    Description = b.Book.Description,
-                    ImageUrl = b.Book.ImageUrl,
-                });
-        }
-
-        public async Task AddBookToCollectionAsync(int bookId, string userId)
+        public async Task AddToFavoritesAsync(int bookId, string userId)
         {
             var book = new FavoriteBook()
             {
@@ -169,7 +140,7 @@ namespace Library.Core.Services
             await repo.SaveChangesAsync();
         }
 
-        public async Task RemoveBookFromCollectionAsync(int bookId, string userId)
+        public async Task RemoveFromFavoritesAsync(int bookId, string userId)
         {
             var recordToRemove = await repo.All<FavoriteBook>()
                 .Where(u => u.UserId == userId && u.BookId == bookId)
@@ -183,6 +154,48 @@ namespace Library.Core.Services
         {
             await repo.DeleteAsync<Book>(bookId);
             await repo.SaveChangesAsync();
+        }
+
+        public async Task AddToFinishedAsync(int bookId, string userId)
+        {
+            var book = new FinishedBook()
+            {
+                UserId = userId,
+                BookId = bookId
+            };
+
+            await repo.AddAsync(book);
+            await repo.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<BookViewModel>> GetFinishedByUserIdAsync(string userId)
+        {
+            var user = await repo.All<ApplicationUser>()
+                .Where(u => u.Id == userId)
+                .Include(u => u.FinishedBooks)
+                .ThenInclude(fb => fb.Book)
+                .ThenInclude(b => b.Category)
+                .Include(u => u.FinishedBooks)
+                .ThenInclude(fb => fb.Book)
+                .ThenInclude(b => b.Publisher)
+                .FirstAsync();
+
+            return user.FinishedBooks
+                .Select(b => new BookViewModel()
+                {
+                    Id = b.BookId,
+                    Title = b.Book.Title,
+                    Publisher = b.Book.Publisher.UserName,
+                    Category = b.Book.Category.Name,
+                    Description = b.Book.Description,
+                    ImageUrl = b.Book.ImageUrl,
+                });
+        }
+
+        public async Task<bool> IsInFinished(string userId, int bookId)
+        {
+            return await repo.AllReadonly<FinishedBook>()
+                .AnyAsync(c => c.UserId == userId && c.BookId == bookId);
         }
     }
 }

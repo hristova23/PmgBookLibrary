@@ -5,32 +5,35 @@
 
 @if (SignInManager.IsSignedIn(User))
 {
-	<li class="dropdown"><a href="#"><span>Books</span> <i class="bi bi-chevron-down"></i></a>
+	<li class="dropdown"><a asp-controller="Books" asp-action="All"><span>Books</span> <i class="bi bi-chevron-down"></i></a>
 		<ul>
 			<li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Books" asp-action="All">All Books</a></li>
 			<li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Books" asp-action="Add">Create Book</a></li>
 			<li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Books" asp-action="Favorites">Favorite Books</a></li>
+			<li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Books" asp-action="Finished">Finished Books</a></li>
 			<li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Books" asp-action="Mine">My Books</a></li>
 		</ul>
 	</li>
 
-	<li class="dropdown"><a href="#"><span>Transactions</span> <i class="bi bi-chevron-down"></i></a>
+	<li class="dropdown"><a asp-controller="Transactions" asp-action="All"><span>Transactions</span> <i class="bi bi-chevron-down"></i></a>
 		<ul>
 			<li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Transactions" asp-action="All">All Transactions</a></li>
 			<li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Transactions" asp-action="Add">Create Transaction</a></li>
 		</ul>
 	</li>
 
-	<li class="nav-item"><a class="nav-link" asp-area="" asp-controller="User" asp-action="Details">Profile</a></li>
-
 	<li class="nav-item">
 		<a class="nav-link" asp-area="" asp-controller="Transactions" asp-action="All">
 			@UserManager.GetUserAsync(User).Result.Credits <i class="bi bi-currency-exchange"></i>	
 		</a>
 	</li>
+	
+    <li class="nav-item">
+		<a  class="nav-link" asp-area="" asp-controller="User" asp-action="Details">Hello @User.Identity?.Name!</a>
+    </li>
 
 	<li class="nav-item">
-		<form class="getstarted" asp-controller="User" asp-action="Logout" asp-route-id="@UserManager.GetUserId(User)">
+		<form class="getstarted" asp-controller="User" asp-action="Logout" asp-route-userId="@UserManager.GetUserId(User)">
 			<button type="submit" class="nav-link btn btn-link">Logout</button>
 		</form>
 	</li>

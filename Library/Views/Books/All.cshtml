@@ -5,6 +5,12 @@
 }
 
 <div class="text-center row">
+    @if(null != TempData["alertMessage"])
+    {
+    <div class="alert alert-success" role="alert">
+      @TempData["alertMessage"]
+    </div>
+    }
     @foreach (var book in Model)
     {
         <partial name="_BookPartial" model="book" />

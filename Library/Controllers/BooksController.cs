@@ -8,7 +8,6 @@ namespace Library.Controllers
 {
     public class BooksController : BaseController
     {
-        //make property userId!
         private readonly IWebHostEnvironment hostingEnviroment;
         private readonly IBookService bookService;
         private readonly ICategoryService categoryService;
@@ -21,6 +20,8 @@ namespace Library.Controllers
             categoryService = _categoryService;
             applicationUserService = _applicationUserService;
         }
+
+        protected string UserId => User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
 
         [HttpGet]
         [AllowAnonymous]
@@ -63,8 +64,6 @@ namespace Library.Controllers
                     model.Image.CopyTo(new FileStream(filePath, FileMode.Create));
                 }
 
-                var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-
                 var bookToAdd = new AddBookViewModel
                 {
                     Title = model.Title,
@@ -73,7 +72,7 @@ namespace Library.Controllers
                     CategoryId = model.CategoryId
                 };
 
-                await bookService.AddBookAsync(bookToAdd, userId);
+                await bookService.AddBookAsync(bookToAdd, this.UserId);
 
                 return RedirectToAction(nameof(All));
             }
@@ -88,30 +87,27 @@ namespace Library.Controllers
         
         public async Task<IActionResult> Mine()
         {
-            var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-            var model = await bookService.GetBooksByUserIdAsync(userId);
+            var model = await bookService.GetBooksByUserIdAsync(this.UserId);
 
             return View("Mine", model);
         }
 
         public async Task<IActionResult> Favorites()
         {
-            var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-            var model = await bookService.GetFavoritesByUserIdAsync(userId);
+            var model = await bookService.GetFavoritesByUserIdAsync(this.UserId);
 
             return View("Favorites", model);
         }
 
         public async Task<IActionResult> Finished()
         {
-            var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-            var model = await bookService.GetFinishedByUserIdAsync(userId);
+            var model = await bookService.GetFinishedByUserIdAsync(this.UserId);
 
             return View("Finished", model);
         }
 
         [AllowAnonymous]
-        public async Task<IActionResult> Details(int bookId)//bool isInFavorites
+        public async Task<IActionResult> Details(int bookId)
         {
             var model = await bookService.GetByIdAsync(bookId);
 
@@ -120,63 +116,63 @@ namespace Library.Controllers
                 return this.NotFound();
             }
 
-            var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-            ViewBag.IsInFavorites = await bookService.IsInFavorites(userId, bookId);
+            ViewBag.IsInFavorites = await bookService.IsInFavorites(this.UserId, bookId);
+
+            ViewBag.IsInFinished = await bookService.IsInFinished(this.UserId, bookId);
+
+            var ownedBooks = await bookService.GetBooksByUserIdAsync(this.UserId);
+            if (ownedBooks.Any(b => b.Id == model.Id))
+            {
+                ViewBag.IsMine = true;
+            }
+            else
+            {
+                ViewBag.IsMine = false;
+            }
 
             return View("Details", model);
         }
 
-        public async Task<IActionResult> AddToCollection(int bookId)
+        public async Task<IActionResult> FinishBook(int bookId)//
         {
-            if (!ModelState.IsValid)
+            await bookService.AddToFinishedAsync(bookId, this.UserId);
+
+            //recieve credits:
+            await applicationUserService.AddCredits(this.UserId, 5);////////
+
+            //show alert
+            TempData["alertMessage"] = "You have successfully finished a book and you recive 5 credits!";
+
+            return RedirectToAction(nameof(Finished));
+        }
+
+        public async Task<IActionResult> AddToCollection(int bookId)//
+        {
+            if (!await bookService.IsInFavorites(this.UserId, bookId))
             {
-                return View(bookId);
-            }
-
-            var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-
-            if (!await bookService.ExistsById(bookId))
-            {
-                //Add error message
-
-                return View(bookId);
-            }
-
-            if (!await applicationUserService.ExistsById(userId))//is necessary??
-            {
-                //Add error message
-
-                return View(bookId);
-            }
-
-            if (!await bookService.IsInFavorites(userId, bookId))
-            {
-                await bookService.AddBookToCollectionAsync(bookId, userId);
+                await bookService.AddToFavoritesAsync(bookId, this.UserId);
             }
 
             return RedirectToAction(nameof(Favorites));
         }
-        //[HttpPost]//?
+
         public async Task<IActionResult> RemoveFromCollection(int bookId)
         {
-            var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-            await bookService.RemoveBookFromCollectionAsync(bookId, userId);
+            await bookService.RemoveFromFavoritesAsync(bookId, this.UserId);
 
             return RedirectToAction(nameof(Favorites));
         }
 
         public async Task<IActionResult> Delete(int bookId)
         {
-            var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-
-            //The DELETE statement conflicted with the REFERENCE
-            //constraint "FK_FavoriteBook_Books_BookId".
-            //The conflict occurred in database "PmgBookLibrary",
-            //table "dbo.FavoriteBook", column 'BookId'
+            if (await bookService.IsInFavorites(this.UserId, bookId))
+            {
+                await bookService.RemoveFromFavoritesAsync(bookId, this.UserId);
+            }
 
             await bookService.DeleteById(bookId);
 
-            return RedirectToAction(nameof(Mine));
+            return RedirectToAction(nameof(All));
         }
     }
 }
