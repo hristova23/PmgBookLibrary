@@ -39,6 +39,11 @@ namespace Library.Data.Configuration
                {
                    Id = 5,
                    Name = "Fantasy"
+               },
+               new Category()
+               {
+                   Id = 6,
+                   Name = "Fiction"
                }
             };  
 

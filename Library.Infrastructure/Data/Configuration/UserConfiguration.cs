@@ -34,6 +34,20 @@ namespace Library.Data.Configuration
             user = new ApplicationUser()
             {
                 Id = "6d5800ce-d726-4fc8-83d9-d6b3ac1f591e",
+                UserName = "administrator",
+                NormalizedUserName = "ADMINISTRATOR",
+                Email = "administrator@mail.com",
+                NormalizedEmail = "ADMINISTRATOR@MAIL.COM"
+            };
+
+            user.PasswordHash =
+            hasher.HashPassword(user, "#Administrator23");
+
+            users.Add(user);
+
+            user = new ApplicationUser()
+            {
+                Id = "75768d25-f416-41ed-a9c9-ad96fe0d5b91",
                 UserName = "guest",
                 NormalizedUserName = "GUEST",
                 Email = "guest@mail.com",
