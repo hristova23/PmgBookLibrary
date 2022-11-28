@@ -13,9 +13,9 @@ namespace Library.Infrastructure.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Credits", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "327ec38d-c3eb-4f67-aeaa-8adc1e4d9e84", 0, "1cbc7d6f-6c2c-4d32-8857-2195380dabf1", 0, "administrator@mail.com", false, false, null, "ADMINISTRATOR@MAIL.COM", "ADMINISTRATOR", "AQAAAAEAACcQAAAAEPXcwUGMHTEdWhqCNzibZMWi2QhQpB49P63/umBLi4nN5b8eTXpQ7vFSMIoTnpIsSg==", null, false, "88c82644-b550-4986-be65-4f3045065bed", false, "administrator" },
-                    { "6d5800ce-d726-4fc8-83d9-d6b3ac1f591e", 0, "a780c3e4-efa6-4495-9560-a7431997f674", 0, "guest@mail.com", false, false, null, "GUEST@MAIL.COM", "GUEST", "AQAAAAEAACcQAAAAEPMeBudj4rU4IHlXmxWqHdhwgNTyg4vEFMQ1O658/y/my3kr/t7+YX62V91NGUX4WA==", null, false, "6b3548cf-956e-43c0-85c2-d738432c6cfa", false, "guest" },
-                    { "dea12856-c198-4129-b3f3-b893d8395082", 0, "9759ab65-b9f9-45f0-9f8c-b34ada7916cf", 0, "agent@mail.com", false, false, null, "AGENT@MAIL.COM", "AGENT", "AQAAAAEAACcQAAAAEMGB6rEv6ZN/ElGIFV1ky8AaXICW2CIB0NZgkiUcsvaPq+Ps+zmuRLtPlLO4Ehd8nw==", null, false, "f295fc2e-da73-4164-b176-c62df787b343", false, "agent" }
+                    { "327ec38d-c3eb-4f67-aeaa-8adc1e4d9e84", 0, "1cbc7d6f-6c2c-4d32-8857-2195380dabf1", 10, "administrator@mail.com", false, false, null, "ADMINISTRATOR@MAIL.COM", "ADMINISTRATOR", "AQAAAAEAACcQAAAAEPXcwUGMHTEdWhqCNzibZMWi2QhQpB49P63/umBLi4nN5b8eTXpQ7vFSMIoTnpIsSg==", null, false, "88c82644-b550-4986-be65-4f3045065bed", false, "administrator" },
+                    { "6d5800ce-d726-4fc8-83d9-d6b3ac1f591e", 0, "a780c3e4-efa6-4495-9560-a7431997f674", 10, "guest@mail.com", false, false, null, "GUEST@MAIL.COM", "GUEST", "AQAAAAEAACcQAAAAEPMeBudj4rU4IHlXmxWqHdhwgNTyg4vEFMQ1O658/y/my3kr/t7+YX62V91NGUX4WA==", null, false, "6b3548cf-956e-43c0-85c2-d738432c6cfa", false, "guest" },
+                    { "dea12856-c198-4129-b3f3-b893d8395082", 0, "9759ab65-b9f9-45f0-9f8c-b34ada7916cf", 10, "agent@mail.com", false, false, null, "AGENT@MAIL.COM", "AGENT", "AQAAAAEAACcQAAAAEMGB6rEv6ZN/ElGIFV1ky8AaXICW2CIB0NZgkiUcsvaPq+Ps+zmuRLtPlLO4Ehd8nw==", null, false, "f295fc2e-da73-4164-b176-c62df787b343", false, "agent" }
                 });
 
             migrationBuilder.InsertData(
