@@ -2,6 +2,7 @@
 using Library.Core.Models.Book;
 using Library.Infrastructure.Data.Common;
 using Library.Infrastructure.Data.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
 namespace Library.Core.Services
@@ -35,7 +36,8 @@ namespace Library.Core.Services
                 PublisherId = userId,
                 CategoryId = model.CategoryId,
                 Description = model.Description,
-                ImageUrl = model.ImageUrl
+                ImageUrl = model.ImageUrl,
+                PdfUrl = model.PdfUrl
             };
 
             await repo.AddAsync(book);
@@ -63,7 +65,8 @@ namespace Library.Core.Services
                 Publisher = book.Publisher.UserName,
                 Category = book.Category.Name,
                 Description = book.Description,
-                ImageUrl = book.ImageUrl
+                ImageUrl = book.ImageUrl,
+                PdfUrl = book.PdfUrl
             };
         }
 
@@ -196,6 +199,56 @@ namespace Library.Core.Services
         {
             return await repo.AllReadonly<FinishedBook>()
                 .AnyAsync(c => c.UserId == userId && c.BookId == bookId);
+        }
+
+        public bool IsImage(IFormFile postedFile)
+        {
+            //-------------------------------------------
+            //  Check the image mime types
+            //-------------------------------------------
+            if (postedFile.ContentType.ToLower() != "image/jpg" &&
+                        postedFile.ContentType.ToLower() != "image/jpeg" &&
+                        postedFile.ContentType.ToLower() != "image/pjpeg" &&
+                        postedFile.ContentType.ToLower() != "image/gif" &&
+                        postedFile.ContentType.ToLower() != "image/x-png" &&
+                        postedFile.ContentType.ToLower() != "image/png")
+            {
+                return false;
+            }
+
+            //-------------------------------------------
+            //  Check the image extension
+            //-------------------------------------------
+            if (Path.GetExtension(postedFile.FileName).ToLower() != ".jpg"
+                && Path.GetExtension(postedFile.FileName).ToLower() != ".png"
+                && Path.GetExtension(postedFile.FileName).ToLower() != ".gif"
+                && Path.GetExtension(postedFile.FileName).ToLower() != ".jpeg")
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public bool IsPdf(IFormFile postedFile)
+        {
+            //-------------------------------------------
+            //  Check the image mime types
+            //-------------------------------------------
+            if (postedFile.ContentType.ToLower() != "application/pdf")
+            {
+                return false;
+            }
+
+            //-------------------------------------------
+            //  Check the image extension
+            //-------------------------------------------
+            if (Path.GetExtension(postedFile.FileName).ToLower() != ".pdf")
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }

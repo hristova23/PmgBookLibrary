@@ -20,6 +20,10 @@ namespace Library.Core.Models.Book
         [Display(Name = "Image")]
         public IFormFile Image { get; set; }
 
+        [Required]
+        [Display(Name = "Pdf")]
+        public IFormFile Pdf { get; set; }
+
         [Display(Name = "Category")]
         public int CategoryId { get; set; }
 

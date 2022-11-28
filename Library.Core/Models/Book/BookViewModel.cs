@@ -1,4 +1,5 @@
-﻿using Ganss.Xss;
+﻿using Microsoft.AspNetCore.Mvc;
+using Ganss.Xss;
 
 namespace Library.Core.Models.Book
 {
@@ -14,6 +15,9 @@ namespace Library.Core.Models.Book
         public string SanitizedDescription => new HtmlSanitizer().Sanitize(this.Description);
 
         public string ImageUrl { get; set; }
+
+        [BindProperty]
+        public string PdfUrl { get; set; }
 
         public string Category { get; set; }
     }

@@ -27,6 +27,9 @@ namespace Library.Infrastructure.Data.Models
         public string ImageUrl { get; set; } = null!;
 
         [Required]
+        public string PdfUrl { get; set; } = null!;
+
+        [Required]
         public int CategoryId { get; set; }
 
         [ForeignKey(nameof(CategoryId))]

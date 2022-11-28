@@ -19,6 +19,10 @@ namespace Library.Core.Models.Book
         [Display(Name = "Image Url")]
         public string ImageUrl { get; set; }
 
+        [Required]
+        [Display(Name = "Pdf Url")]
+        public string PdfUrl { get; set; }
+
         [Display(Name = "Category")]
         public int CategoryId { get; set; }
 

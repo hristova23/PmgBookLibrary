@@ -33,7 +33,7 @@ namespace Library.Data.Configuration
 
             user = new ApplicationUser()
             {
-                Id = "6d5800ce-d726-4fc8-83d9-d6b3ac1f591e",
+                Id = "327ec38d-c3eb-4f67-aeaa-8adc1e4d9e84",
                 UserName = "administrator",
                 NormalizedUserName = "ADMINISTRATOR",
                 Email = "administrator@mail.com",
@@ -47,7 +47,7 @@ namespace Library.Data.Configuration
 
             user = new ApplicationUser()
             {
-                Id = "75768d25-f416-41ed-a9c9-ad96fe0d5b91",
+                Id = "6d5800ce-d726-4fc8-83d9-d6b3ac1f591e",
                 UserName = "guest",
                 NormalizedUserName = "GUEST",
                 Email = "guest@mail.com",

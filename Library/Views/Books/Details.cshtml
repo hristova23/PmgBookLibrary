@@ -24,7 +24,6 @@
 							}
 						</div>
 					</div>
-					<div class="swiper-pagination"></div>
 				</div>
 			</div>
 
@@ -34,7 +33,7 @@
 					<ul>
 						<li><strong>Publisher: </strong>@Model.Publisher</li>
 						<li><strong>Category: </strong>@Model.Category</li>
-						<li><strong>Download: </strong> <a href="#">www.example.com</a></li>
+						<li><strong>Download Pdf: </strong><a asp-controller="Books" asp-action="Download" asp-route-fileName="@Model.PdfUrl">Download</a></li>
 					</ul>
 				</div>
 				<div class="portfolio-description">

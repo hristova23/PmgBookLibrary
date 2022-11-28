@@ -1,4 +1,5 @@
 ﻿using Library.Core.Models.Book;
+using Microsoft.AspNetCore.Http;
 
 namespace Library.Core.Contracts
 {
@@ -29,5 +30,10 @@ namespace Library.Core.Contracts
         Task RemoveFromFavoritesAsync(int bookId, string userId);
 
         Task DeleteById(int bookId);
+
+        bool IsImage(IFormFile postedFile);
+
+        bool IsPdf(IFormFile postedFile);
+
     }
 }

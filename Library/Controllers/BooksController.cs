@@ -55,20 +55,46 @@ namespace Library.Controllers
 
             try
             {
-                string uniqueFileName = null;
+                string imgUniqueFileName = null;
+                string pdfUniqueFileName = null;
                 if (model.Image != null)
                 {
-                    string uploadsFolder = Path.Combine(hostingEnviroment.WebRootPath, "img/bookcovers");
-                    uniqueFileName = Guid.NewGuid().ToString() + "_" + model.Image.FileName;
-                    string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-                    model.Image.CopyTo(new FileStream(filePath, FileMode.Create));
+                    if (!bookService.IsImage(model.Image))
+                    {
+                        model.Categories = await categoryService.GetCategoriesAsync();
+
+                        ViewBag.ErrorMessage = "Please select a valid image file";
+
+                        return View(model);
+                    }
+
+                    if (!bookService.IsPdf(model.Pdf))
+                    {
+                        model.Categories = await categoryService.GetCategoriesAsync();
+
+                        ViewBag.ErrorMessage = "Please select a valid pdf file";
+
+                        return View(model);
+                    }
+
+                    string imgUploadsFolder = Path.Combine(hostingEnviroment.WebRootPath, "img/bookcovers");
+                    imgUniqueFileName = Guid.NewGuid().ToString() + "_" + model.Image.FileName;
+                    string imgFilePath = Path.Combine(imgUploadsFolder, imgUniqueFileName);
+                    model.Image.CopyTo(new FileStream(imgFilePath, FileMode.Create));
+
+
+                    string pdfUploadsFolder = Path.Combine(hostingEnviroment.WebRootPath, "pdfs");
+                    pdfUniqueFileName = Guid.NewGuid().ToString() + "_" + model.Pdf.FileName;
+                    string pdfFilePath = Path.Combine(pdfUploadsFolder, pdfUniqueFileName);
+                    model.Pdf.CopyTo(new FileStream(pdfFilePath, FileMode.Create));
                 }
 
                 var bookToAdd = new AddBookViewModel
                 {
                     Title = model.Title,
                     Description = model.Description,
-                    ImageUrl = uniqueFileName,
+                    ImageUrl = imgUniqueFileName,
+                    PdfUrl = pdfUniqueFileName,
                     CategoryId = model.CategoryId
                 };
 
@@ -173,6 +199,12 @@ namespace Library.Controllers
             await bookService.DeleteById(bookId);
 
             return RedirectToAction(nameof(All));
+        }
+
+        public FileResult Download(string fileName)
+        {
+            var FileVirtualPath = "~/pdfs/" + fileName;
+            return File(FileVirtualPath, "application/force-download", Path.GetFileName(FileVirtualPath));
         }
     }
 }
