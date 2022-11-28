@@ -169,7 +169,7 @@ namespace Library.Controllers
             //show alert
             TempData["alertMessage"] = "You have successfully finished a book and you recive 5 credits!";
 
-            return RedirectToAction(nameof(Finished));
+            return RedirectToAction(nameof(All));
         }
 
         public async Task<IActionResult> AddToCollection(int bookId)//
