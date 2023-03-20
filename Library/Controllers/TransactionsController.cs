@@ -47,16 +47,16 @@ namespace Library.Controllers
             var sender = await applicationUserService.GetByIdAsync(this.UserId);
             var reciever = await applicationUserService.GetByEmailAsync(model.RecieverEmail);
 
-            if (sender.Email == reciever.Email)
+            if (reciever == null)
             {
-                ViewBag.ErrorMessage = "You can't send credits to yourself!";
+                ViewBag.ErrorMessage = "There is no user associated with this email";
 
                 return View(model);
             }
 
-            if (reciever == null)
+            if (sender.Email == reciever.Email)
             {
-                ViewBag.ErrorMessage = "There is no user associated with this email";
+                ViewBag.ErrorMessage = "You can't send credits to yourself!";
 
                 return View(model);
             }

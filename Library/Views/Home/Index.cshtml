@@ -48,7 +48,7 @@
     <header id="header" class="fixed-top ">
         <div class="container d-flex align-items-center">
 
-            <h1 class="logo me-auto"><a class="nav-link scrollto active" href="#hero">PMG Book Library</a></h1>
+            <h1 class="logo me-auto"><a class="nav-link scrollto active" href="#hero">My Book Library</a></h1>
             <!-- Uncomment below if you prefer to use an image logo -->
             <!-- <a href="index.html" class="logo me-auto"><img src="~/img/logo.png" alt="" class="img-fluid"></a>-->
 
@@ -56,7 +56,7 @@
                 <ul>
                     <li><a class="nav-link scrollto" href="#about">About</a></li>
                     <li><a class="nav-link scrollto" href="#services">Services</a></li>
-                    <li><a class="nav-link   scrollto" href="#portfolio">Recent</a></li>
+                    <li><a class="nav-link scrollto" href="#portfolio">Recent</a></li>
                     <li><a class="nav-link scrollto" href="#team">Team</a></li>
                     <li><a class="nav-link scrollto" href="#faq">FAQ</a></li>
                     <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
@@ -136,7 +136,7 @@
                     <div class="col-xl-3 col-md-6 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay="100">
                         <div class="icon-box">
                             <div class="icon"><i class='bx bx-book'></i></div>
-                            <h4><a href="">Read</a></h4>
+                            <h4><a class="nav-link" asp-area="" asp-controller="Books" asp-action="All">Read</a></h4>
                             <p>Read books entirely for free. No subscription needed.</p>
                         </div>
                     </div>
@@ -144,7 +144,7 @@
                     <div class="col-xl-3 col-md-6 d-flex align-items-stretch mt-4 mt-md-0" data-aos="zoom-in" data-aos-delay="200">
                         <div class="icon-box">
                             <div class="icon"><i class='bx bx-book-add'></i></div>
-                            <h4><a href="">Publish</a></h4>
+                            <h4><a class="nav-link" asp-area="" asp-controller="Books" asp-action="Add">Publish</a></h4>
                             <p>Contribute by publish your own books.</p>
                         </div>
                     </div>
@@ -152,7 +152,7 @@
                     <div class="col-xl-3 col-md-6 d-flex align-items-stretch mt-4 mt-xl-0" data-aos="zoom-in" data-aos-delay="300">
                         <div class="icon-box">
                             <div class="icon"><i class='bx bx-bookmarks' ></i></div>
-                            <h4><a href="">Bookmark</a></h4>
+                            <h4><a class="nav-link" asp-area="" asp-controller="Books" asp-action="Favorites">Bookmark</a></h4>
                             <p>Keep track of your favorite masterpieces.</p>
                         </div>
                     </div>
@@ -160,7 +160,7 @@
                     <div class="col-xl-3 col-md-6 d-flex align-items-stretch mt-4 mt-xl-0" data-aos="zoom-in" data-aos-delay="400">
                         <div class="icon-box">
                             <div class="icon"><i class="bx bx-layer"></i></div>
-                            <h4><a href="">Collect credits</a></h4>
+                            <h4><a class="nav-link" asp-area="" asp-controller="Transactions" asp-action="All">Collect credits</a></h4>
                             <p>Collect credits by publishing and finishing books and compete with your friends.</p>
                         </div>
                     </div>
@@ -360,7 +360,7 @@
                         <h4>Join Our Newsletter</h4>
                         <p>This service is not available in this moment</p>
                         <form action="" method="post">
-                            <input type="email" name="email"><input disabled type="submit" value="Subscribe">
+                            <input disabled type="email" name="email"><input disabled type="submit" value="Subscribe">
                         </form>
                     </div>
                 </div>
@@ -372,28 +372,32 @@
                 <div class="row">
 
                     <div class="col-lg-3 col-md-6 footer-contact">
-                        <h3>Arsha</h3>
+                        <h3>Contact</h3>
                         <p>
-                            A108 Adam Street <br>
-                            New York, NY 535022<br>
-                            United States <br><br>
-                            <strong>Phone:</strong> +1 5589 55488 55<br>
-                            <strong>Email:</strong> info@example.com<br>
+                            Oborishte 1 Street <br>
+                            Dobrich, Bulgaria <br>
+                            Bulgaria <br><br>
+                            <strong>Phone:</strong> 088 835 2522<br>
+                            <strong>Email:</strong> victoriya.hristova04@gmail.com<br>
                         </p>
                     </div>
 
                     <div class="col-lg-3 col-md-6 footer-links">
                         <h4>Useful Links</h4>
                         <ul>
-                            <li><i class="bx bx-chevron-right"></i> <a href="#">Home</a></li>
-                            <li><i class="bx bx-chevron-right"></i> <a href="#">About us</a></li>
-                            <li><i class="bx bx-chevron-right"></i> <a href="#">Services</a></li>
+                            <li><i class="bx bx-chevron-right"></i> <a asp-controller="Home" asp-action="Index">Home</a></li>
+                            <li><i class="bx bx-chevron-right"></i> <a asp-controller="Home" asp-action="Index" asp-fragment="about">About us</a></li>
+                            <li><i class="bx bx-chevron-right"></i> <a asp-controller="Home" asp-action="Index" asp-fragment="services">Services</a></li>
+                            <li><i class="bx bx-chevron-right"></i> <a asp-controller="Home" asp-action="Index" asp-fragment="team">Team</a></li>
                         </ul>
                     </div>
 
                     <div class="col-lg-3 col-md-6 footer-links">
+                        <br />
+                        <br />
                         <ul>
-                            <li><i class="bx bx-chevron-right"></i> <a href="#">Library</a></li>
+                            <li><i class="bx bx-chevron-right"></i> <a asp-controller="Home" asp-action="Index" asp-fragment="faq">FAQ</a></li>
+                            <li><i class="bx bx-chevron-right"></i> <a asp-controller="Home" asp-action="Index" asp-fragment="contact">Contacts</a></li>
                             <li><i class="bx bx-chevron-right"></i> <a href="#">Terms of service</a></li>
                             <li><i class="bx bx-chevron-right"></i> <a href="#">Privacy policy</a></li>
                         </ul>
@@ -402,9 +406,10 @@
                     <div class="col-lg-3 col-md-6 footer-links">
                         <h4>Our Social Networks</h4>
                         <div class="social-links mt-3">
-                            <a href="#" class="facebook"><i class="bx bxl-facebook"></i></a>
-                            <a href="#" class="instagram"><i class="bx bxl-instagram"></i></a>
-                            <a href="#" class="linkedin"><i class="bx bxl-linkedin"></i></a>
+                            <a href="https://github.com/hristova23" class="github"><i class='bx bxl-github'></i></a>
+                            <a href="https://www.facebook.com/profile.php?id=100009588433228" class="facebook"><i class="bx bxl-facebook"></i></a>
+                            <a href="https://www.instagram.com/hristova__viktoria/" class="instagram"><i class="bx bxl-instagram"></i></a>
+                            <a href="https://www.linkedin.com/in/%D0%B2%D0%B8%D0%BA%D1%82%D0%BE%D1%80%D0%B8%D1%8F-%D1%85%D1%80%D0%B8%D1%81%D1%82%D0%BE%D0%B2%D0%B0-no-5-649817247/" class="linkedin"><i class="bx bxl-linkedin"></i></a>
                         </div>
                     </div>
 
