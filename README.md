@@ -40,7 +40,7 @@
 * HTML/CSS
 * Entity Framework
 * ASP.NET
-* MySQL
+* SQL Server
 * Bootstrap
 * TinyMCE
 
